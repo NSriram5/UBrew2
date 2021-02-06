@@ -39,8 +39,17 @@ module.exports = (sequelize, DataTypes)=>{
         instructions:{
             type:DataTypes.BLOB,
             allowNull:false,
-
+        },
+        Style:{
+            type:DataTypes.STRING,
+            allowNull:true
+        },
+        active:{
+            type:DataTypes.BOOLEAN,
+            allowNull:false,
+            default:true   
         }
+
 
 
     });

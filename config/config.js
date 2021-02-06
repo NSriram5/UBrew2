@@ -14,6 +14,9 @@ const configuration = {
         pool:{
             acquire:600000
         }
+    },
+    environmentOptions:{
+        environment:"LOCAL",
     }
 }
 

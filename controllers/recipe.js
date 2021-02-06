@@ -1,42 +1,43 @@
 const Sequelize = require('sequelize');
-const User= require('../models').User;
+const Recipe= require('../models').Recipe;
 const Op = require('../models/').Sequelize.Op;
 module.exports={
-    createUser(user){
-        console.log(User);
+    createRecipe(recipe){
+        console.log(Recipe);
         console.log(user);
-        return User
-            .create(user)
+        return Recipe
+            .create(recipe)
             .then((result)=>{
-                console.log('User Created');
+                console.log('Recipe Created');
                 console.log(result);
             })
             .catch(error=>{
                 console.log(error, 'There was an error in the create');
             });
     },
-    getUser(filter){
+    getRecipe(filter){
         let whereclause;
         whereclause={};
-        if(filter.email){
-            whereclause.email = {[Op.eq]:filter.email};
+        if(filter.name){
+            whereclause.Name = {[Op.iLike]:'%' + filter.name + '%'};
         }
-        if(filter.firstname){
-            whereclause.firstName={[Op.iLike]:'%' + filter.firstname + '%'};
+        if(filter.style){
+            whereclause.Style={[Op.iLike]:filter.style};
         }
-        if(filter.lastname){
-            whereclause.lastName={[Op.iLike]:'%' + filter.lastname+'%'};
+        if(filter.token){
+            whereclause.token={[Op.eq]:filter.token};
         }
         if(filter.userId){
             whereclause.userId = {[Op.eq]:filter.userId};
         }
-        return User
+        return Recipe
             .findAll({
                 where: whereclause,
-                attributes:['userId', 'email', 'admin', 'firstName','lastName'],
+                attributes:['Name', 'ABV', 'OG', 'FG','IBU', 'token', 
+                'style', 'public', 'shareable', 'instructions','userId'],
             })
             .then((result)=>{
-                console.log('User Found');
+                console.log('Recipe Found');
                 console.log(result);
             })
             .catch(error=>{
