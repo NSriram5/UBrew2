@@ -35,12 +35,12 @@ router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
  *
  * Authorization required: login, admin OR user of page being requested
  **/
-router.get("/:username", ensureLoggedIn, async function(req, res, next) {
+router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
     try {
-        if (res.locals.user.isAdmin == false && res.locals.user.username != req.params.username) {
+        if (res.locals.user.isAdmin == false && res.locals.user.userId != req.params.userId) {
             throw new ForbiddenError("Only an admin or the user of this account can see these details");
         }
-        const user = await User.get(req.params.username);
+        const user = await User.get(req.params.userId);
         const recipes = await user.getRecipes();
 
         return res.render("user_details.html", { customer, recipes });

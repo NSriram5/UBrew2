@@ -4,6 +4,7 @@ const express = require("express");
 
 const { ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
 const Ingredient = require("./models/ingredient");
+const { createIngredient, getIngredient, getAllIngredients } = require("../controllers/ingredients")
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const ingredientNewSchema = require("../schemas/ingredientNew.json");
 const ingredientUpdateSchema = require("../schemas/ingredientUpdate.json");
@@ -18,7 +19,12 @@ const router = new express.Router();
  */
 router.post("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
     try {
-        const ingredient
+        const validator = jsonschema.validate(req.body, ingredientNewSchema);
+        if (!validator.valid) {
+            const errs = validator.errors.map(e => e.stack);
+            throw new BadRequestError(errs);
+        }
+        await createIngredient(req.body);
         return res.redirect(`/`);
     } catch (err) {
         return next(err);
@@ -33,7 +39,7 @@ router.post("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
  */
 router.get("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        const ingredients = await Ingredient.findall();
+        const ingredients = await getAllIngredients();
         return res.render("ingredients_list.html", { ingredients });
     } catch (err) {
         return next(err);
@@ -48,7 +54,7 @@ router.get("/", ensureLoggedIn, async function(req, res, next) {
  */
 router.get("/:id", ensureLoggedIn, async function(req, res, next) {
     try {
-        const ingredient = await Ingredient.get(req.params.id);
+        const ingredient = await getIngredient(req.params.id);
         return res.render("ingredient_details.html", { ingredient });
     } catch (err) {
         return next(err);
