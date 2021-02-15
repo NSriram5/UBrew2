@@ -1,23 +1,24 @@
 const configuration = {
-    databaseConfig:{
-        DATABASE_USERNAME:'dbadmin',
-        DATABSE_PASSWORD:'MaLtT3A&HoppZ',
-        DATABASE_NAME:'uBrew2',
-        DATABSE_URL :'127.0.0.1',
-        DATABASE_PORT:'8000'
+    databaseConfig: {
+        DATABASE_USERNAME: 'dbadmin',
+        DATABSE_PASSWORD: 'MaLtT3A&HoppZ',
+        DATABASE_NAME: 'uBrew2',
+        DATABSE_URL: '127.0.0.1',
+        DATABASE_PORT: '8000'
     },
-    databaseOptions:{
-        "host":"127.0.0.1",
+    databaseOptions: {
+        "host": "127.0.0.1",
         "dialect": "postgres",
-        "freezeTableName":true,
-        "port":8000,
-        pool:{
-            acquire:600000
+        "freezeTableName": true,
+        "port": 8000,
+        pool: {
+            acquire: 600000
         }
     },
-    environmentOptions:{
-        environment:"LOCAL",
+    environmentOptions: {
+        environment: "LOCAL",
     }
 }
 
-module.exports.configuration=configuration;
+module.exports.configuration = configuration;
+module.exports.BCRYPT_WORK_FACTOR = process.env.NODE_ENV === "test" ? 1 : 12;
