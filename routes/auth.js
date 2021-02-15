@@ -5,7 +5,7 @@
 const jsonschema = require("jsonschema");
 
 //const User = require("../models/user");
-const { createUser } = require("../controllers/user")
+const { createUser, getUser } = require("../controllers/user")
 const express = require("express");
 const router = new express.Router();
 const bcrypt = require("bcrypt");
@@ -15,6 +15,7 @@ const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError, UnauthorizedError } = require("../expressError");
 // const { delete } = require("../scripts");
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
+const user = require("../controllers/user");
 
 /** POST /auth/token:  { username, password } => { token }
  *
@@ -31,15 +32,15 @@ router.post("/token", async function(req, res, next) {
             throw new BadRequestError(errs);
         }
 
-        const { userId, password } = req.body;
-        const user = await getUser({ userId: userId });
+        const { email, password } = req.body;
+        const user = await getUser({ email: email });
         const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-        if (isValid === true) {
+        if (isValidPassword === true) {
             delete user.passwordHash
             const token = createToken(user);
             return res.json({ token });
         } else {
-            throw new UnauthorizedError("Invalid username/password");
+            throw new UnauthorizedError("Invalid email/password");
         }
 
     } catch (err) {
@@ -64,9 +65,10 @@ router.post("/register", async function(req, res, next) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-        passwordHash = await bcrypt.hash(req.body.password, BCRYPT_WORK_FACTOR);
+        const passwordHash = await bcrypt.hash(req.body.password, BCRYPT_WORK_FACTOR);
         delete req.body.password
-        const newUser = await User.createUser({...req.body, passwordHash: passwordHash, admin: false });
+        const newUser = await User.createUser({...req.body, passwordHash: passwordHash });
+        delete user.passwordHash
         const token = createToken(newUser);
         return res.status(201).json({ token });
     } catch (err) {

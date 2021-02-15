@@ -3,8 +3,8 @@
 const express = require("express");
 
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
-const User = require("./models/user");
-const Recipe = require("./models/recipe");
+const User = require("./controllers/user");
+const Recipe = require("./controllers/recipe");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
@@ -40,10 +40,11 @@ router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
         if (res.locals.user.isAdmin == false && res.locals.user.userId != req.params.userId) {
             throw new ForbiddenError("Only an admin or the user of this account can see these details");
         }
-        const user = await User.get(req.params.userId);
-        const recipes = await user.getRecipes();
+        const user = User.get({ userId: req.params.userId });
+        const recipes = Recipe.getRecipe({ userId: req.params.userId });
+        await user && await recipes;
 
-        return res.render("user_details.html", { customer, recipes });
+        return res.render("user_details.html", { user, recipes });
     } catch (err) {
         return next(err);
     }
@@ -55,27 +56,27 @@ router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
  *
  * Authorization required: login, admin OR user of page being requested
  **/
-router.patch("/:username/edit/", async function(req, res, next) {
-    try {
-        const user = await User.get(req.params.username);
+// router.patch("/:username/edit/", async function(req, res, next) {
+//     try {
+//         const user = await User.get(req.params.username);
 
-        const validator = jsonschema.validate(req.body, userUpdateSchema);
-        if (!validator.valid) {
-            const errs = validator.errors.map(e => e.stack);
-            throw new BadRequestError(errs);
-        }
-        //TODO: Update this to match model
-        user.firstName = req.body.firstName;
-        user.lastName = req.body.lastName;
-        user.phone = req.body.phone;
-        user.bio = req.body.bio;
-        await user.save();
+//         const validator = jsonschema.validate(req.body, userUpdateSchema);
+//         if (!validator.valid) {
+//             const errs = validator.errors.map(e => e.stack);
+//             throw new BadRequestError(errs);
+//         }
+//         //TODO: Update this to match model
+//         user.firstName = req.body.firstName;
+//         user.lastName = req.body.lastName;
+//         user.phone = req.body.phone;
+//         user.bio = req.body.bio;
+//         await user.save();
 
-        return res.redirect(`/${customer.username}`);
-    } catch (err) {
-        return next(err);
-    }
-});
+//         return res.redirect(`/${customer.username}`);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 /** DELETE /[username] => Removed user
  * 
@@ -83,16 +84,16 @@ router.patch("/:username/edit/", async function(req, res, next) {
  *  
  *  Authorization required: login OR admin
  **/
-router.delete("/:username", ensureLoggedIn, async function(req, res, next) {
-    try {
-        if (res.locals.user.isAdmin == false && res.locals.user.username != req.params.username) {
-            throw new ForbiddenError("Only an admin or the user of this account can delete this account");
-        }
-        await User.remove(req.params.username);
-        return res.redirect(`/`);
-    } catch (err) {
-        return next(err);
-    }
-});
+// router.delete("/:username", ensureLoggedIn, async function(req, res, next) {
+//     try {
+//         if (res.locals.user.isAdmin == false && res.locals.user.username != req.params.username) {
+//             throw new ForbiddenError("Only an admin or the user of this account can delete this account");
+//         }
+//         await User.remove(req.params.username);
+//         return res.redirect(`/`);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 module.exports = router;
