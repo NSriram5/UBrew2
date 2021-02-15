@@ -23,8 +23,10 @@
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.17.1",
+        "express-nunjucks": "^2.2.5",
         "jsonschema": "^1.4.0",
         "jsonwebtoken": "^8.5.1",
+        "nunjucks": "^3.2.3",
         "pg": "^8.5.1",
         "pg-hstore": "^2.3.3",
         "sequelize": "^6.5.0",
