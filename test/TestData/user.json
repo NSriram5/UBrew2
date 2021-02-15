@@ -1,0 +1,7 @@
+{
+    "firstName":"Tyler",
+    "lastName":"Wahl",
+    "passwordHash":"T3stPassword",
+    "email":"twahl@bu.edu",
+    "admin":true
+}
