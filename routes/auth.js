@@ -14,8 +14,8 @@ const userAuthSchema = require("../schemas/userAuth.json");
 const userRegisterSchema = require("../schemas/userRegister.json");
 const { BadRequestError, UnauthorizedError } = require("../expressError");
 // const { delete } = require("../scripts");
-const { BCRYPT_WORK_FACTOR } = require("../config.js");
-const user = require("../controllers/user");
+const { BCRYPT_WORK_FACTOR } = require("../config/config");
+//const user = require("../controllers/user");
 
 /** POST /auth/token:  { username, password } => { token }
  *
@@ -29,18 +29,25 @@ router.post("/token", async function(req, res, next) {
         const validator = jsonschema.validate(req.body, userAuthSchema);
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
-            throw new BadRequestError(errs);
+            return res.json({ invalidMessage: "The form has not been filled out correctly" })
         }
 
         const { email, password } = req.body;
-        const user = await getUser({ email: email });
-        const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+        debugger;
+        const founduser = await getUser({ email: email });
+        debugger;
+        if (!founduser) {
+            return res.json({ invalidMessage: "User email or password is incorrect" })
+        }
+        const isValidPassword = await bcrypt.compare(password, founduser.passwordHash);
         if (isValidPassword === true) {
-            delete user.passwordHash
-            const token = createToken(user);
-            return res.json({ token });
+            delete founduser.passwordHash
+            const token = createToken(founduser);
+            req.session.token = token;
+            return res.redirect("/");
+            //return res.json({ token });
         } else {
-            throw new UnauthorizedError("Invalid email/password");
+            return res.json({ invalidMessage: "User email or password is incorrect" });
         }
 
     } catch (err) {
@@ -67,10 +74,12 @@ router.post("/register", async function(req, res, next) {
         }
         const passwordHash = await bcrypt.hash(req.body.password, BCRYPT_WORK_FACTOR);
         delete req.body.password
-        const newUser = await User.createUser({...req.body, passwordHash: passwordHash });
-        delete user.passwordHash
+        const newUser = await createUser({...req.body, passwordHash: passwordHash });
+        delete newUser.passwordHash
         const token = createToken(newUser);
-        return res.status(201).json({ token });
+        req.session.token = token;
+        return res.redirect("/");
+        // return res.status(201).json({ token });
     } catch (err) {
         return next(err);
     }

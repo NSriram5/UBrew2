@@ -3,8 +3,8 @@
 const express = require("express");
 
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
-const User = require("./controllers/user");
-const Recipe = require("./controllers/recipe");
+const User = require("../controllers/user");
+const Recipe = require("../controllers/recipe");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");

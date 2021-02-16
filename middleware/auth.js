@@ -3,7 +3,7 @@
 /** Convenience middleware to handle common auth cases in routes. */
 
 const jwt = require("jsonwebtoken");
-const { SECRET_KEY } = require("../config");
+const { SECRET_KEY } = require("../config/config");
 const { UnauthorizedError } = require("../expressError");
 
 
@@ -21,7 +21,11 @@ function authenticateJWT(req, res, next) {
         if (authHeader) {
             const token = authHeader.replace(/^[Bb]earer /, "").trim();
             res.locals.user = jwt.verify(token, SECRET_KEY);
+        } else if (req.session.token) {
+            console.log("Logged in as a person");
+            res.locals.user = jwt.verify(req.session.token, SECRET_KEY);
         }
+
         return next();
     } catch (err) {
         return next();

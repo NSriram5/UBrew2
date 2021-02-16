@@ -3,7 +3,7 @@
 const express = require("express");
 
 const { ensureAdmin, ensureLoggedIn } = require("../middleware/auth");
-const Ingredient = require("./models/ingredient");
+//const Ingredient = require("../models/ingredient");
 const { createIngredient, getIngredient, getAllIngredients } = require("../controllers/ingredients")
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const ingredientNewSchema = require("../schemas/ingredientNew.json");
