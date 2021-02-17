@@ -1,10 +1,13 @@
 const user = require('./controllers/user');
 const fs = require('fs');
 const test = require('./test');
-const app = require('./scripts/index')
+const index = require('./models/index');
 const { configuration } = require('./config/config');
 if (configuration.environmentOptions.environment == "LOCAL") {
-    test.runTests();
+    test.runDatabaseTests();
+}
+if (configuration.environmentOptions.environment == "AWS") {
+
 }
 
 app.listen(3000, function() {

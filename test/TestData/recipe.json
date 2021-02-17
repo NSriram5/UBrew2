@@ -1,0 +1,27 @@
+{
+    "Name":"Test Recipe",
+    "ABV": 5.6,
+    "OG": 1.062,
+    "FG": 1.010,
+    "IBU": 77,
+    "public":false,
+    "shareable":false,
+    "style":"IPA",
+    "active":true,
+    "instructions":"Blank list of instructions",
+    "Ingredients":[
+        { 
+            "Name": "Munich Malt",
+            "quantity":4
+        },
+        {
+            "Name": "Citra",
+            "quantity": 2
+        },
+        {
+            "Name": "Water",
+            "quantity": 7
+        }
+    ]
+
+}

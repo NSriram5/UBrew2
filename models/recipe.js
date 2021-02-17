@@ -1,6 +1,11 @@
 module.exports = (sequelize, DataTypes)=>{
     const Recipe = sequelize.define('Recipe',{
     // Model attributes are defined here
+        id:{
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
         Name: {
             type: DataTypes.STRING,
             allowNull: false
@@ -24,6 +29,7 @@ module.exports = (sequelize, DataTypes)=>{
         },
         token:{
             type:DataTypes.UUID,
+            defaultValue:DataTypes.UUIDV4,
             allowNull:false
         },
         public:{
@@ -40,10 +46,6 @@ module.exports = (sequelize, DataTypes)=>{
             type:DataTypes.BLOB,
             allowNull:false,
         },
-        Style:{
-            type:DataTypes.STRING,
-            allowNull:true
-        },
         active:{
             type:DataTypes.BOOLEAN,
             allowNull:false,
@@ -57,6 +59,10 @@ module.exports = (sequelize, DataTypes)=>{
         Recipe.belongsTo(models.User,{
             foreignKey:'userid',
             allowNull: true,
+        });
+        Recipe.belongsTo(models.Style,{
+            foreginKey:'styleId',
+            allowNull:true,
         });
     }
     return Recipe;
