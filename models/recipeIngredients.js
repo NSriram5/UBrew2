@@ -1,7 +1,10 @@
 module.exports = (sequelize, DataTypes)=>{
-    const RecipeIngredient = sequelize.define('recipeIngredient',{
+    const RecipeIngredient = sequelize.define('recipeIngredients',{
     // Model attributes are defined here
-      
+        quantity:{
+            type:DataTypes.FLOAT,
+            allowNull:true
+        }
 
     });
     RecipeIngredient.associate=(models)=>{

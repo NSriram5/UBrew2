@@ -12,10 +12,10 @@ const db={};
 // Option 1: Passing a connection URI
 let sequelize;
 sequelize = new Sequelize(
-    config.configuration.databaseConfig.DATABASE_NAME,
-    config.configuration.databaseConfig.DATABASE_USERNAME,
-    config.configuration.databaseConfig.DATABSE_PASSWORD,
-    config.configuration.databaseOptions
+    config.configuration.aws.databaseConfig.DATABASE_NAME,
+    config.configuration.aws.databaseConfig.DATABASE_USERNAME,
+    config.configuration.aws.databaseConfig.DATABSE_PASSWORD,
+    config.configuration.aws.databaseOptions
 ); // Example for postgres
 
 fs
@@ -32,10 +32,6 @@ Object.keys(db).forEach(modelName=>{
         db[modelName].associate(db);
     }   
 })
-sequelize
-    .sync({force:true})
-    .then(()=>{ console.log('Connection has been established successfully.'); })
-    .catch( (err) => { console.error('Unable to connect to the database:', error);});
 
 db.sequelize=sequelize;
 db.Sequelize = Sequelize;
