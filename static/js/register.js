@@ -1,11 +1,13 @@
-async function getRegister(typedEmail, typedPassword) {
+async function getRegister(typedEmail, typedPassword, typedFirstName, typedLastName) {
     try {
         const response = await axios.post('/auth/register', { email: typedEmail, password: typedPassword, firstName: typedFirstName, lastName: typedLastName });
         if (response.data.invalidMessage) {
             applyErrors(response.data.invalidMessage)
             return;
         }
-        if (response.data.token) {
+        if (response.data.validMessage) {
+            console.log("success. should redirect now");
+            window.location.href = "/"
             return
             // sessionStorage.setItem("Token", response.data.token)
         }
@@ -24,9 +26,9 @@ async function conductRegister(e) {
     let typedPassword = e.target.querySelector("#passwordInput").value;
     let typedFirstName = e.target.querySelector("#firstnameInput").value;
     let typedLastName = e.target.querySelector("#lastnameInput").value;
-    let outcome = await getRegister(typedEmail, typedPassword, typedFirstName, typedLastName);
-
     debugger;
+    getRegister(typedEmail, typedPassword, typedFirstName, typedLastName);
+
 
 }
 
@@ -35,5 +37,5 @@ function applyErrors(response) {
 }
 
 $(function() {
-    $("#loginForm").submit(conductRegister);
+    $("#registerForm").submit(conductRegister);
 });

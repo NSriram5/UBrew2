@@ -11,7 +11,6 @@ function createToken(user) {
         userId: user.userId,
         admin: user.admin || false,
     };
-
     return jwt.sign(payload, SECRET_KEY);
 }
 

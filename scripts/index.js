@@ -30,19 +30,24 @@ app.use(express.static(path.resolve(__dirname + "/../static")));
 app.use(session({ secret: SESSION_SECRET }))
     //app.use(morgan("tiny"));
 app.use(authenticateJWT);
+// Parse body for urlencoded (non-JSON) data
+app.use(bodyParser.urlencoded({ extended: false }));
+
 nunjucks.configure(path.resolve(__dirname + "/../templates"), { autoescape: true, express: app });
 
 app.get("/", authenticateJWT, async function(req, res, next) {
     try {
+        let publicRecipes = [];
+        let myRecipes = [];
         if (res.locals.user) {
             console.log(`Logged in as ${res.locals.user}`)
-            const myRecipes = getRecipe({ userId: res.locals.user.userId });
+            myRecipes = getRecipe({ userId: res.locals.user.userId });
+            publicRecipes = getRecipe({ shareable: true });
+            await publicRecipes && await myRecipes;
         }
-        const publicRecipes = getRecipe({ shareable: true });
+        publicRecipes = await getRecipe({ shareable: true });
 
-        await publicRecipes && await myRecipes;
-
-        return res.render("index.html");
+        return res.render("index.html", { publicRecipes, myRecipes });
     } catch (err) {
         return next(err);
     }

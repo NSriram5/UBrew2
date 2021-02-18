@@ -11,12 +11,24 @@ const db = {};
 
 // Option 1: Passing a connection URI
 let sequelize;
-sequelize = new Sequelize(
-    config.configuration.aws.databaseConfig.DATABASE_NAME,
-    config.configuration.aws.databaseConfig.DATABASE_USERNAME,
-    config.configuration.aws.databaseConfig.DATABSE_PASSWORD,
-    config.configuration.aws.databaseOptions
-); // Example for postgres
+if (config.configuration.environmentOptions.environment == "LOCAL") {
+    sequelize = new Sequelize(
+        config.configuration.local.databaseConfig.DATABASE_NAME,
+        config.configuration.local.databaseConfig.DATABASE_USERNAME,
+        config.configuration.local.databaseConfig.DATABSE_PASSWORD,
+        config.configuration.local.databaseOptions
+    );
+}
+if (config.configuration.environmentOptions.environment == "AWS") {
+    sequelize = new Sequelize(
+        config.configuration.aws.databaseConfig.DATABASE_NAME,
+        config.configuration.aws.databaseConfig.DATABASE_USERNAME,
+        config.configuration.aws.databaseConfig.DATABSE_PASSWORD,
+        config.configuration.aws.databaseOptions
+    );
+}
+
+// Example for postgres
 
 fs
     .readdirSync(__dirname)

@@ -3,7 +3,6 @@ const ingredient = require('../controllers/ingredients');
 const index = require('../models/index');
 const fs = require('fs');
 const recipe = require('../controllers/recipe');
-const index = require('../models/index');
 const style = require('../controllers/style');
 module.exports = {
     async runDatabaseTests() {
@@ -14,7 +13,8 @@ module.exports = {
         //USER TEST
         let rawUser = fs.readFileSync('./test/TestData/user.json');
         let userobj = JSON.parse(rawUser);
-        await user.createUser(userobj);
+        await user.createUser(userobj[0]);
+        await user.createUser(userobj[1]);
         console.log(user);
         console.log(userobj);
         var createResult = await user.createUser(userobj);

@@ -50,7 +50,7 @@
                 <nav>
                     <ul>
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link active">Public</a></li>
-                        <li class="tm-paging-item"><a href="#" class="tm-paging-link">My Brews</a></li>
+                        <li class="tm-paging-item"><a href="#" class="tm-paging-link">Mine</a></li>
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link">Rare</a></li>
                     </ul>
                 </nav>
@@ -59,92 +59,40 @@
             <!-- Gallery -->
             <div class="row tm-gallery">
                 <!-- gallery page NEW -->
-                <div id="tm-gallery-page-new" class="tm-gallery-page">
+
+
+                <div id="tm-gallery-page-public" class="tm-gallery-page">
+                    {% for recipe in publicRecipes %}
                     <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_01.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Pale Lager</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 10</p>
-                            </figcaption>
-                        </figure>
+                        <a href="/recipes/{{recipe.id}}">
+                            <figure>
+                                <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
+                                <figcaption>
+                                    <h4 class="tm-gallery-title">{{recipe.name}}</h4>
+                                    <p class="tm-gallery-description">{{recipe.IBU}}</p>
+                                </figcaption>
+                            </figure>
+                        </a>
                     </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_02.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Classic Bock</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 11</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_03.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Dark Lager</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 8</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_04.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Classic Wheat</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 11</p>
-                            </figcaption>
-                        </figure>
-                    </article>
+                    {% endfor %}
                 </div>
                 <!-- gallery page NEW -->
 
                 <!-- gallery page FAVORITES -->
-                <div id="tm-gallery-page-favorites" class="tm-gallery-page hidden">
+                <div id="tm-gallery-page-mine" class="tm-gallery-page hidden">
+                    {% for recipe in myRecipes %}
                     <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_05.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Classic Stout</h4>
-                                <p class="tm-gallery-description">Ddescription</p>
-                                <p class="tm-gallery-price">IBU: 11</p>
-                            </figcaption>
-                        </figure>
+                        <a href="/recipes/{{recipe.id}}">
+                            <figure>
+                                <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
+                                <figcaption>
+                                    <h4 class="tm-gallery-title">{{recipe.name}}</h4>
+                                    <p class="tm-gallery-description">{{recipe.IBU}}</p>
+                                </figcaption>
+                            </figure>
+                        </a>
                     </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_06.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Classic Pilsner</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 12</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_07.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Brown Ale</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 10</p>
-                            </figcaption>
-                        </figure>
-                    </article>
-                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <figure>
-                            <img src="../img/gallery/beers_08.jpg" alt="Image" class="img-fluid tm-gallery-img" />
-                            <figcaption>
-                                <h4 class="tm-gallery-title">Pale Ale</h4>
-                                <p class="tm-gallery-description">Description</p>
-                                <p class="tm-gallery-price">IBU: 18</p>
-                            </figcaption>
-                        </figure>
-                    </article>
+                    {% endfor %}
                 </div>
                 <!-- gallery page FAVORITES -->
 

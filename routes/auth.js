@@ -5,7 +5,7 @@
 const jsonschema = require("jsonschema");
 
 //const User = require("../models/user");
-const { createUser, getUser } = require("../controllers/user")
+const User = require("../controllers/user")
 const express = require("express");
 const router = new express.Router();
 const bcrypt = require("bcrypt");
@@ -33,23 +33,13 @@ router.post("/token", async function(req, res, next) {
         }
 
         const { email, password } = req.body;
-        debugger;
-        const founduser = await getUser({ email: email });
-        debugger;
-        if (!founduser) {
+        const valid = await User.authenticateUser(email, password);
+        if (!valid) {
             return res.json({ invalidMessage: "User email or password is incorrect" })
         }
-        const isValidPassword = await bcrypt.compare(password, founduser.passwordHash);
-        if (isValidPassword === true) {
-            delete founduser.passwordHash
-            const token = createToken(founduser);
-            req.session.token = token;
-            return res.redirect("/");
-            //return res.json({ token });
-        } else {
-            return res.json({ invalidMessage: "User email or password is incorrect" });
-        }
-
+        const token = createToken(valid);
+        req.session.token = token;
+        return res.json({ validMessage: "Token loaded. You are logged in" });
     } catch (err) {
         return next(err);
     }
@@ -72,13 +62,12 @@ router.post("/register", async function(req, res, next) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-        const passwordHash = await bcrypt.hash(req.body.password, BCRYPT_WORK_FACTOR);
-        delete req.body.password
-        const newUser = await createUser({...req.body, passwordHash: passwordHash });
-        delete newUser.passwordHash
-        const token = createToken(newUser);
+
+        await User.createUser({ user: req.body });
+        const valid = await User.authenticateUser(req.body.email, req.body.password);
+        const token = createToken(valid);
         req.session.token = token;
-        return res.redirect("/");
+        return res.json({ validMessage: "User Created. Token loaded. You are logged in" });
         // return res.status(201).json({ token });
     } catch (err) {
         return next(err);

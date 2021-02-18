@@ -29,7 +29,8 @@ module.exports = {
         whereclause = {};
         if (filter.email) {
             whereclause.email = {
-                [Op.eq]: filter.email };
+                [Op.eq]: filter.email
+            };
         }
         if (filter.firstname) {
             whereclause.firstName = {
@@ -50,14 +51,11 @@ module.exports = {
         if (authenticate) { attributesclause.push('passwordHash'); }
         return User
             .findAll({
-
                 where: whereclause,
                 raw: true,
-
                 attributes: attributesclause,
             })
             .then((result) => {
-                debugger;
                 console.log('User Found');
                 console.log(result);
                 return result;
@@ -89,13 +87,12 @@ module.exports = {
                 console.log(error, 'There was an error in the create');
             });
 
-        debugger;
         return results;
     },
     async authenticateUser(email, password) {
         try {
             const user = await this.getUser({ email: email }, true);
-            if (user[0].passwordHash) {
+            if (user[0] && user[0].passwordHash) {
                 const valid = await bcrypt.compare(password, user[0].passwordHash);
                 delete user[0].passwordHash;
                 if (valid === true) {

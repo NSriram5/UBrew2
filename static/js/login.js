@@ -5,9 +5,10 @@ async function getToken(typedEmail, typedPassword) {
             applyErrors(response.data.invalidMessage)
             return;
         }
-        if (response.data.token) {
+        if (response.data.validMessage) {
+            console.log("success. should redirect now");
+            window.location.href = "/"
             return
-            // sessionStorage.setItem("Token", response.data.token)
         }
 
     } catch (err) {
@@ -20,16 +21,15 @@ async function getToken(typedEmail, typedPassword) {
 
 async function conductLogin(e) {
     e.preventDefault();
+    $("#entryErrors").text("");
     let typedEmail = e.target.querySelector("#emailInput").value;
     let typedPassword = e.target.querySelector("#passwordInput").value;
 
     let outcome = await getToken(typedEmail, typedPassword);
-    debugger;
-
 }
 
 function applyErrors(response) {
-
+    $("#entryErrors").text(response);
 }
 
 $(function() {

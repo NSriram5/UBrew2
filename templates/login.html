@@ -55,18 +55,18 @@ https://templatemo.com/tm-539-simple-house
             <div class="tm-container-inner">
 
                 <div class="row">
-                    <form id="loginForm" action="" method="POST" class="tm-contact-form">
+                    <form id="loginForm" action="/auth/token/" method="POST" class="tm-contact-form">
 
                         <div class="form-group">
-                            <input id="emailInput" type="email" name="name" class="form-control" placeholder="Email" required="" />
+                            <input id="emailInput" type="emailInput" name="emailInput" class="form-control" placeholder="Email" required="" />
                         </div>
 
                         <div class="form-group">
-                            <input id="passwordInput" type="password" name="password" class="form-control" placeholder="Password" required="" />
+                            <input id="passwordInput" type="password" name="passwordInput" class="form-control" placeholder="Password" required="" />
                         </div>
 
                         <div class="form-group tm-d-flex">
-                            <button type="submit" class="tm-btn tm-btn-success tm-btn-right">
+                            <button id="loginBtn" class="tm-btn tm-btn-success tm-btn-right">
 					            Login
 					          </button>
                         </div>
