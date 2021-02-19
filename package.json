@@ -1,0 +1,38 @@
+{
+    "name": "ubrew2",
+    "version": "1.0.0",
+    "description": "A Brewing Recipe App",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon ./index.js",
+        "debug": "nodemon --inspect ./index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NSriram5/UBrew2.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/NSriram5/UBrew2/issues"
+    },
+    "homepage": "https://github.com/NSriram5/UBrew2#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    },
+    "dependencies": {
+        "bcrypt": "^5.0.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-nunjucks": "^2.2.5",
+        "express-session": "^1.17.1",
+        "jsonschema": "^1.4.0",
+        "jsonwebtoken": "^8.5.1",
+        "nunjucks": "^3.2.3",
+        "pg": "^8.5.1",
+        "pg-hstore": "^2.3.3",
+        "sequelize": "^6.5.0",
+        "sequelize-cli": "^6.2.0"
+    }
+}

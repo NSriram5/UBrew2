@@ -1,0 +1,26 @@
+[
+    {
+        "name": "India Pale Ale (IPA)",
+        "color":"b87b1c"
+    },
+    {
+        "name": "Stout",
+        "color":"4b0c11"
+    },
+    {
+        "name": "Ale",
+        "color":"94461c"
+    },
+    {
+        "name": "Pale Ale",
+        "color":"c99800"
+    },
+    {
+        "name": "Porter",
+        "color":"5c1012"
+    },
+    {
+        "name": "Lager",
+        "color": "e1c336"
+    }
+]
