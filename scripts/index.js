@@ -39,15 +39,18 @@ app.get("/", authenticateJWT, async function(req, res, next) {
     try {
         let publicRecipes = [];
         let myRecipes = [];
+        let user = {}
         if (res.locals.user) {
             console.log(`Logged in as ${res.locals.user}`)
             myRecipes = getRecipe({ userId: res.locals.user.userId });
+
             publicRecipes = getRecipe({ shareable: true });
+
+            user = res.locals.user;
             await publicRecipes && await myRecipes;
         }
         publicRecipes = await getRecipe({ shareable: true });
-
-        return res.render("index.html", { publicRecipes, myRecipes });
+        return res.render("index.html", { publicRecipes, myRecipes, user });
     } catch (err) {
         return next(err);
     }
@@ -62,10 +65,28 @@ app.get("/login", authenticateJWT, async function(req, res, next) {
     }
 })
 
+app.get("/logout", async function(req, res, next) {
+    try {
+        if (res.session && res.session.token) delete res.session.token;
+        return res.redirect("/");
+    } catch (err) {
+        return next(err);
+    }
+})
+
 app.get("/register", async function(req, res, next) {
     try {
         if (res.session && res.session.token) delete res.session.token;
         return res.render("register.html");
+    } catch (err) {
+        return next(err);
+    }
+})
+
+app.get("/about", async function(req, res, next) {
+    try {
+        if (res.session && res.session.token) delete res.session.token;
+        return res.render("about.html");
     } catch (err) {
         return next(err);
     }

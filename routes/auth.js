@@ -64,7 +64,9 @@ router.post("/register", async function(req, res, next) {
         }
         const userEmail = req.body.email;
         const userPassword = req.body.password;
+
         await User.createUser(req.body);
+
         const valid = await User.authenticateUser(userEmail, userPassword);
         if (!valid) {
             return res.json({ invalidMessage: "User email or password is incorrect" })
