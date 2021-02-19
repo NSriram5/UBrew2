@@ -5,11 +5,18 @@ module.exports={
     createIngredient(ingredient){
         console.log(Ingredient);
         console.log(ingredient);
+        
         return Ingredient
-            .create(ingredient)
+            .findOne({
+                where: Name={[Op.iLike]:'%' +ingredient.Name + '%'}
+            })
             .then((result)=>{
                 console.log('ingredient Created');
                 console.log(result);
+                if(!result.dataValues){
+                    result = Ingredient.create(ingredient);
+                }
+                return result
             })
             .catch(error=>{
                 console.log(error, 'There was an error in the create');

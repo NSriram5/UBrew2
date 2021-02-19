@@ -1,7 +1,15 @@
-{
-    "firstName":"Tyler",
-    "lastName":"Wahl",
-    "passwordHash":"T3stPassword",
-    "email":"twahl@bu.edu",
-    "admin":true
-}
+[{
+        "firstName": "Tyler",
+        "lastName": "Wahl",
+        "password": "T3stPassword",
+        "email": "twahl@bu.edu",
+        "admin": true
+    },
+    {
+        "firstName": "Nikhil",
+        "lastName": "Sriram",
+        "password": "a",
+        "email": "nsriram@bu.edu",
+        "admin": true
+    }
+]
