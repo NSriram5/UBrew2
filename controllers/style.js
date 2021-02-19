@@ -3,7 +3,7 @@ const Op = require('../models/').Sequelize.Op;
 module.exports={
     createStyle(style){
         return Style
-                .create(style)
+                .create(style,{returning:['id','name','color']})
                 .then((result)=>{
                     console.log(result);
                     return result;
@@ -51,7 +51,7 @@ module.exports={
                 .bulkCreate(styles)
                 .then((result)=>{
                     console.log(result);
-                    console.log('successfully created ingredients');
+                    console.log('successfully created styles');
                     return result;
                 })
                 .catch((err)=>{

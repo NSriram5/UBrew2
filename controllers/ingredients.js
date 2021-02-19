@@ -5,18 +5,24 @@ module.exports={
     createIngredient(ingredient){
         console.log(Ingredient);
         console.log(ingredient);
-        
+        let whereclause ={};
+        whereclause.Name={[Op.iLike]:'%' + ingredient.Name + '%'};
         return Ingredient
             .findOne({
-                where: Name={[Op.iLike]:'%' +ingredient.Name + '%'}
+                where: whereclause,
+                attributes:['id','Name']
             })
             .then((result)=>{
-                console.log('ingredient Created');
                 console.log(result);
-                if(!result.dataValues){
-                    result = Ingredient.create(ingredient);
+                if(result === null){
+                    console.log('couldnt find an ingredient, creating');
+                    result = Ingredient.create(ingredient,{returning:['id','Name']});
                 }
-                return result
+                else{
+                    console.log('ingredient found');
+                    console.log(result);
+                }
+                return result;
             })
             .catch(error=>{
                 console.log(error, 'There was an error in the create');

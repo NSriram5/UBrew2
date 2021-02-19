@@ -4,43 +4,48 @@ const Ingredient = require('./ingredients');
 const Op = require('../models/').Sequelize.Op;
 const RecipeIngredient = require('./recipeIngredient');
 module.exports={
-    createRecipe(recipe){
+    async createRecipe(recipe){
         console.log(recipe);
         let recipeIngredientList=[];
-        recipe.Ingredients.forEach(element=>{
+        for(element in  recipe.Ingredients){
             let indingredient={};
-            indingredient.Name = element.Name;
-            Ingredient
+            indingredient.Name = recipe.Ingredients[element].Name;
+             await Ingredient
                 .createIngredient(indingredient)
                 .then((result)=>{
-                    console.log(result); 
-                    let recipeIngredientItem ={};
-                    recipeIngredientItem.ingredientId = result.dataValues.id;
-                    recipeIngredientItem.quantity = element.quantity;
+                     let recipeIngredientItem ={};
+                    recipeIngredientItem.ingredientId = result.id;
+                    recipeIngredientItem.quantity = recipe.Ingredients[element].quantity;
                     recipeIngredientList.push(recipeIngredientItem);
                 })
                 .catch((exception)=>{
                     console.log(exception);
                     console.log('Error creating Ingredient');
                 })
-        });
-        let newRecipe={};
-        newRecipe.Name = recipe.name;
+        };
+         let newRecipe={};
+        newRecipe.Name = recipe.Name;
         newRecipe.ABV = recipe.ABV;
         newRecipe.OG = recipe.OG;
         newRecipe.FG = recipe.FG;
         newRecipe.IBU = recipe.IBU;
         newRecipe.public = recipe.public;
         newRecipe.shareable=recipe.shareable;
-        newRecipe.Style = recipe.style;
+        newRecipe.styleId = recipe.styleId;
+        newRecipe.userid = recipe.userId;
         newRecipe.active = recipe.active;
         newRecipe.instructions = recipe.instructions;
-        return Recipe
-            .create(recipe)
+         return Recipe
+            .create(
+                newRecipe, 
+                {returning: ['Name','ABV', 'OG', 'FG','IBU',
+                            'public','shareable','userid',
+                            'active','instructions','styleId','id'
+                ]})
             .then((result)=>{
-                recipeIngredientList.forEach((element)=>{
-                    element.recipeId = result.dataValues.id;
-                });
+                for(ri in recipeIngredientList){
+                    recipeIngredientList[ri].recipeId = result.dataValues.id;
+                };
                 console.log('Recipe Created');
                 console.log(recipeIngredientList);
                 RecipeIngredient
@@ -79,7 +84,7 @@ module.exports={
             .findAll({
                 where: whereclause,
                 attributes:['Name', 'ABV', 'OG', 'FG','IBU', 'token', 
-                'style', 'public', 'shareable', 'instructions','userId'],
+                'styleId', 'public', 'shareable', 'instructions','userId'],
             })
             .then((result)=>{
                 console.log('Recipe Found');

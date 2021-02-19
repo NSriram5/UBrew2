@@ -13,20 +13,20 @@ module.exports= {
         //USER TEST
         let rawUser = fs.readFileSync('./test/TestData/user.json');
         let userobj = JSON.parse(rawUser);
-        console.log(user);
-        console.log(userobj);
+        //console.log(user);
+        //console.log(userobj);
         var createResult = await user.createUser(userobj);
         var result =  await user.getUser({email : 'twahl@bu.edu'});
         console.log('result of get user');
-        console.log(result[0]);
+        //console.log(result[0]);
         console.log(result);
         let tempUser={};
-        tempUser.userId=result[0].userId;
-        tempUser.disabled = true;
-        var userUpdateResult = await user.updateUser(tempUser);
-        console.log('userUpdateResult');
-        console.log(userUpdateResult[1][0].dataValues);
-        console.log(await user.authenticateUser('twahl@bu.edu','T3stPassword'));
+        //tempUser.userId=result[0].userId;
+        //tempUser.disabled = true;
+       // var userUpdateResult = await user.updateUser(tempUser);
+        //console.log('userUpdateResult');
+        //console.log(userUpdateResult[1][0].dataValues);
+        //console.log(await user.authenticateUser('twahl@bu.edu','T3stPassword'));
         //INGREDIENTS TEST
         let rawIngredients = fs.readFileSync('./test/TestData/ingredients.json');
         let ingredientsObj = JSON.parse(rawIngredients);
@@ -36,19 +36,24 @@ module.exports= {
         });
         console.log(ingredient.getAllIngredients());*/
 
-        //RECIPETEST
-       /* let rawRecipe = fs.readFileSync('./test/TestData/recipe.json');
-        let recipeObj = JSON.parse(rawRecipe);
-        console.log(recipeObj);
-        var recipeCreateResult = await recipe.createRecipe(recipeObj); 
-        console.log(recipeCreateResult);
-*/
         //STYLE TEST
-      /*  let rawStyles = fs.readFileSync('./test/TestData/styles.json');
+        let rawStyles = fs.readFileSync('./test/TestData/styles.json');
         let stylesObj = JSON.parse(rawStyles);
         console.log(stylesObj);
         var styleCreateResult = await style.bulkCreateStyles(stylesObj);
-        console.log(styleCreateResult);*/
+        console.log(styleCreateResult);
+        
+        //RECIPETEST
+        let rawRecipe = fs.readFileSync('./test/TestData/recipe.json');
+        let recipeObj = JSON.parse(rawRecipe);
+        //console.log(recipeObj);
+       // recipeObj.userid = tempUser.userId;
+        recipeObj.styleId=1;
+
+        var recipeCreateResult = await recipe.createRecipe(recipeObj); 
+        console.log(recipeCreateResult);
+
+        
     }
 }
 

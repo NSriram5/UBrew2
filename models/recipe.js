@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes)=>{
     const Recipe = sequelize.define('Recipe',{
     // Model attributes are defined here
-        id:{
+       id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -56,14 +56,15 @@ module.exports = (sequelize, DataTypes)=>{
 
     });
     Recipe.associate=(models)=>{
+        Recipe.belongsTo(models.Style,{
+            foreignKey:'styleId',
+            allowNull:true,
+        });
         Recipe.belongsTo(models.User,{
             foreignKey:'userid',
             allowNull: true,
         });
-        Recipe.belongsTo(models.Style,{
-            foreginKey:'styleId',
-            allowNull:true,
-        });
+       
     }
     return Recipe;
 }
