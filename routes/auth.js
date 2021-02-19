@@ -62,9 +62,13 @@ router.post("/register", async function(req, res, next) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-
-        await User.createUser({ user: req.body });
-        const valid = await User.authenticateUser(req.body.email, req.body.password);
+        const userEmail = req.body.email;
+        const userPassword = req.body.password;
+        await User.createUser(req.body);
+        const valid = await User.authenticateUser(userEmail, userPassword);
+        if (!valid) {
+            return res.json({ invalidMessage: "User email or password is incorrect" })
+        }
         const token = createToken(valid);
         req.session.token = token;
         return res.json({ validMessage: "User Created. Token loaded. You are logged in" });
