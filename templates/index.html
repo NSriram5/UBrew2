@@ -19,6 +19,11 @@
         <!-- Logo & Site Name -->
         <div class="placeholder">
             <div class="parallax-window" data-parallax="scroll" data-image-src="img/home-page.jpg">
+                {% if user.userId %}
+                <div id="welcome-message" class="welcome-message">
+                    Welcome {{user.userName}}
+                </div>
+                {% else %} {% endif%}
                 <div class="tm-header">
                     <div class="row tm-header-inner">
                         <div class="col-md-6 col-12">
@@ -32,8 +37,13 @@
                             <ul class="tm-nav-ul">
                                 <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
                                 <li class="tm-nav-li"><a href="/about" class="tm-nav-link">About</a></li>
+                                {% if user.userId %}
+                                <li class="tm-nav-li"><a href="/create/recipe" class="tm-nav-link">Create Recipe</a></li>
+                                <li class="tm-nav-li"><a href="/logout" class="tm-nav-link">Logout</a></li>
+                                {% else %}
                                 <li class="tm-nav-li"><a href="/register" class="tm-nav-link">Register</a></li>
                                 <li class="tm-nav-li"><a href="/login" class="tm-nav-link">Login</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>
