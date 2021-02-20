@@ -1,22 +1,24 @@
 const user = require('../controllers/user');
 const ingredient = require('../controllers/ingredients');
+const index = require('../models/index');
 const fs = require('fs');
 const recipe = require('../controllers/recipe');
-const index = require('../models/index');
 const style = require('../controllers/style');
-module.exports= {
-    async runDatabaseTests(){
+module.exports = {
+    async runDatabaseTests() {
         await index.sequelize
-            .sync({force:true})
-            .then(()=>{ console.log('Connection has been established successfully.'); })
-            .catch( (err) => { console.error('Unable to connect to the database:', err);});
+            .sync({ force: true })
+            .then(() => { console.log('Connection has been established successfully.'); })
+            .catch((err) => { console.error('Unable to connect to the database:', err); });
         //USER TEST
         let rawUser = fs.readFileSync('./test/TestData/user.json');
         let userobj = JSON.parse(rawUser);
-        //console.log(user);
-        //console.log(userobj);
+        await user.createUser(userobj[0]);
+        await user.createUser(userobj[1]);
+        console.log(user);
+        console.log(userobj);
         var createResult = await user.createUser(userobj);
-        var result =  await user.getUser({email : 'twahl@bu.edu'});
+        var result = await user.getUser({ email: 'twahl@bu.edu' });
         console.log('result of get user');
         //console.log(result[0]);
         console.log(result);
@@ -56,5 +58,3 @@ module.exports= {
         
     }
 }
-
-
