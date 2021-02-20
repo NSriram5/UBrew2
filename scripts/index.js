@@ -69,6 +69,8 @@ app.get("/login", authenticateJWT, async function(req, res, next) {
 app.get("/logout", async function(req, res, next) {
     try {
         if (res.session && res.session.token) delete res.session.token;
+        delete res.locals.user
+        delete req.session.token
         return res.redirect("/");
     } catch (err) {
         return next(err);
@@ -78,6 +80,7 @@ app.get("/logout", async function(req, res, next) {
 app.get("/register", async function(req, res, next) {
     try {
         if (res.session && res.session.token) delete res.session.token;
+
         return res.render("register.html");
     } catch (err) {
         return next(err);
