@@ -18,7 +18,8 @@ const { getUser } = require("../controllers/user")
 const path = require("path");
 const nunjucks = require("nunjucks");
 const bodyParser = require("body-parser");
-const { SESSION_SECRET } = require("../config/config")
+const { SESSION_SECRET } = require("../config/config");
+const user = require("../controllers/user");
 
 //const morgan = require("morgan");
 
@@ -85,8 +86,18 @@ app.get("/register", async function(req, res, next) {
 
 app.get("/about", async function(req, res, next) {
     try {
-        if (res.session && res.session.token) delete res.session.token;
         return res.render("about.html");
+    } catch (err) {
+        return next(err);
+    }
+})
+
+app.get("/create-recipe", authenticateJWT, async function(req, res, next) {
+    try {
+        if (!res.locals.user.userId) {
+            return res.redirect("/");
+        }
+        return res.render("create-recipe.html");
     } catch (err) {
         return next(err);
     }
