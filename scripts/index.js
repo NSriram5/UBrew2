@@ -13,12 +13,14 @@ const authRoutes = require("../routes/auth");
 const usersRoutes = require("../routes/users");
 const recipesRoutes = require("../routes/recipes");
 const ingredientsRoutes = require("../routes/ingredients");
+const adminRoutes = require("../routes/admin");
 const { getRecipe } = require("../controllers/recipe")
 const { getUser } = require("../controllers/user")
 const path = require("path");
 const nunjucks = require("nunjucks");
 const bodyParser = require("body-parser");
-const { SESSION_SECRET } = require("../config/config")
+const { SESSION_SECRET } = require("../config/config");
+const user = require("../controllers/user");
 
 //const morgan = require("morgan");
 
@@ -68,6 +70,8 @@ app.get("/login", authenticateJWT, async function(req, res, next) {
 app.get("/logout", async function(req, res, next) {
     try {
         if (res.session && res.session.token) delete res.session.token;
+        delete res.locals.user
+        delete req.session.token
         return res.redirect("/");
     } catch (err) {
         return next(err);
@@ -77,6 +81,7 @@ app.get("/logout", async function(req, res, next) {
 app.get("/register", async function(req, res, next) {
     try {
         if (res.session && res.session.token) delete res.session.token;
+
         return res.render("register.html");
     } catch (err) {
         return next(err);
@@ -85,8 +90,18 @@ app.get("/register", async function(req, res, next) {
 
 app.get("/about", async function(req, res, next) {
     try {
-        if (res.session && res.session.token) delete res.session.token;
         return res.render("about.html");
+    } catch (err) {
+        return next(err);
+    }
+})
+
+app.get("/create-recipe", authenticateJWT, async function(req, res, next) {
+    try {
+        if (!res.locals.user.userId) {
+            return res.redirect("/");
+        }
+        return res.render("create-recipe.html");
     } catch (err) {
         return next(err);
     }
@@ -96,6 +111,7 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/ingredients", ingredientsRoutes);
+app.use("/admin", adminRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
