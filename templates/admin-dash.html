@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>UBrew2</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <link href="../css/templatemo-style.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/ico" href="/img/UBrew2-Favicon.ico" />
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder">
+            <div class="parallax-window" data-parallax="scroll" data-image-src="img/home-page.jpg">
+                {% if user.userId %}
+                <div id="welcome-message" class="welcome-message">
+                    Welcome {{user.userName}}
+                </div>
+                {% else %} {% endif%}
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-md-6 col-12">
+                            <img src="/img/UBrew2-Icon-Small.png" alt="Logo" class="tm-site-logo" />
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title">UBrew2</h1>
+                                <h6 class="tm-site-description">Craft Beer Recipes&nbsp;&nbsp; </h6>
+                            </div>
+                        </div>
+                        <nav class="col-md-6 col-12 tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
+                                <li class="tm-nav-li"><a href="/about" class="tm-nav-link">About</a></li>
+                                {% if user.userId %}
+                                <li class="tm-nav-li"><a href="/create-recipe" class="tm-nav-link">Create Recipe</a></li>
+                                <li class="tm-nav-li"><a href="/logout" class="tm-nav-link">Logout</a></li>
+                                {% else %}
+                                <li class="tm-nav-li"><a href="/register" class="tm-nav-link">Register</a></li>
+                                <li class="tm-nav-li"><a href="/login" class="tm-nav-link">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <header class="row tm-welcome-section">
+                <p class="col-12 text-center">UBrew2 was started by five graduate school students who love craft beer. As part of a class project, the UBrew2 crew decided to launch a community for those who share their interest in craft beer and their recipes.</p>
+            </header>
+
+            <div class="tm-paging-links">
+                <nav>
+                    <ul>
+                        <li class="tm-paging-item"><a href="#" class="tm-paging-link active">Public</a></li>
+                        <li class="tm-paging-item"><a href="#" class="tm-paging-link">Mine</a></li>
+                        <li class="tm-paging-item"><a href="#" class="tm-paging-link">Rare</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Gallery -->
+            <div class="row tm-gallery">
+                <!-- gallery page NEW -->
+
+
+                <div id="tm-gallery-page-public" class="tm-gallery-page">
+                    {% for recipe in publicRecipes %}
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <a href="/recipes/{{recipe.id}}">
+                            <figure>
+                                <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
+                                <figcaption>
+                                    <h4 class="tm-gallery-title">Name:{{recipe.name}}</h4>
+                                    <p class="tm-gallery-description">IBU:{{recipe.IBU}}</p>
+                                    <p class="tm-gallery-description">ABV:{{recipe.ABV}}</p>
+                                </figcaption>
+                            </figure>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                <!-- gallery page NEW -->
+
+                <!-- gallery page FAVORITES -->
+                <div id="tm-gallery-page-mine" class="tm-gallery-page hidden">
+                    {% for recipe in myRecipes %}
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <a href="/recipes/{{recipe.id}}">
+                            <figure>
+                                <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
+                                <figcaption>
+                                    <h4 class="tm-gallery-title">Name:{{recipe.name}}</h4>
+                                    <p class="tm-gallery-description">IBU:{{recipe.IBU}}</p>
+                                    <p class="tm-gallery-description">ABV:{{recipe.ABV}}</p>
+                                </figcaption>
+                            </figure>
+                        </a>
+                    </article>
+                    {% endfor %}
+                </div>
+                <!-- gallery page FAVORITES -->
+
+                <!-- gallery page RARE -->
+                <div id="tm-gallery-page-rare" class="tm-gallery-page hidden">
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <figure>
+                            <img src="../img/gallery/beers_09.jpg" alt="Image" class="img-fluid tm-gallery-img" />
+                            <figcaption>
+                                <h4 class="tm-gallery-title">Classic Cider</h4>
+                                <p class="tm-gallery-description">Description</p>
+                                <p class="tm-gallery-price">IBU: 18</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <figure>
+                            <img src="../img/gallery/beers_10.jpg" alt="Image" class="img-fluid tm-gallery-img" />
+                            <figcaption>
+                                <h4 class="tm-gallery-title">Classic Porter</h4>
+                                <p class="tm-gallery-description">Description</p>
+                                <p class="tm-gallery-price">IBU: 18</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <figure>
+                            <img src="../img/gallery/beers_11.jpg" alt="Image" class="img-fluid tm-gallery-img" />
+                            <figcaption>
+                                <h4 class="tm-gallery-title">Classic Marzen</h4>
+                                <p class="tm-gallery-description">Description</p>
+                                <p class="tm-gallery-price">IBU: 18</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                    <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
+                        <figure>
+                            <img src="../img/gallery/beers_12.jpg" alt="Image" class="img-fluid tm-gallery-img" />
+                            <figcaption>
+                                <h4 class="tm-gallery-title">Classic Dunkel</h4>
+                                <p class="tm-gallery-description">Description</p>
+                                <p class="tm-gallery-price">IBU: 18</p>
+                            </figcaption>
+                        </figure>
+                    </article>
+                </div>
+                <!-- gallery page RARE -->
+
+            </div>
+        </main>
+
+        <footer class="tm-footer text-center">
+            <p><img src="../img/UBrew2-Logo-Big.png" width="500" height="500" alt="" /></p>
+            <p>Copyright &copy; 2021 UBrew2 LLC</p>
+        </footer>
+    </div>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/parallax.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle click on paging links
+            $('.tm-paging-link').click(function(e) {
+                e.preventDefault();
+
+                var page = $(this).text().toLowerCase();
+                $('.tm-gallery-page').addClass('hidden');
+                $('#tm-gallery-page-' + page).removeClass('hidden');
+                $('.tm-paging-link').removeClass('active');
+                $(this).addClass("active");
+            });
+        });
+    </script>
+</body>
+
+</html>
