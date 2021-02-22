@@ -53,7 +53,10 @@
 
         <main>
             <header class="row tm-welcome-section">
+                {% if user.admin %}
+                <a href="/admin">Admin Dashboard</a> {% else %}
                 <p class="col-12 text-center">UBrew2 was started by five graduate school students who love craft beer. As part of a class project, the UBrew2 crew decided to launch a community for those who share their interest in craft beer and their recipes.</p>
+                {% endif %}
             </header>
 
             <div class="tm-paging-links">

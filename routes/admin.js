@@ -7,10 +7,13 @@ const User = require("../controllers/user");
 const Recipe = require("../controllers/recipe");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 
-const { use } = require("../scripts");
-
 const router = new express.Router();
 
+
+function sayHello(req, res, next) {
+    console.log("Hello!");
+    return next();
+}
 
 /** Admin view
  *
@@ -18,12 +21,13 @@ const router = new express.Router();
  *
  * Authorization required: login, admin
  **/
-router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
+router.get("/", ensureLoggedIn, sayHello, ensureAdmin, async function(req, res, next) {
     try {
-        const users = User.getUser();
-        const recipes = Recipe.getRecipe();
+        const users = User.getAllUsers();
+        const recipes = Recipe.getAllRecipes();
         await users && await recipes;
 
+        debugger;
         return res.render("admin_dash.html", { users, recipes });
     } catch (err) {
         return next(err);
