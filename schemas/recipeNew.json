@@ -41,10 +41,11 @@
         "IBU",
         "public",
         "shareable",
-        "style",
+        "styleId",
         "active",
         "instructions",
-        "Ingredients"
+        "Ingredients",
+        "userId"
     ],
     "properties": {
         "Name": {
