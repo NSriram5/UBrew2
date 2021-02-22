@@ -51,7 +51,7 @@ router.get("/:id", async function(req, res, next) {
  */
 router.post("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        debugger;
+        req.body["userId"] = res.locals.user.userId
         const validator = jsonschema.validate(req.body, recipeNew);
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
