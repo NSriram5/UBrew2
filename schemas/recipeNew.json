@@ -13,7 +13,8 @@
         "IBU": 77,
         "public": false,
         "shareable": false,
-        "style": "IPA",
+        "styleId": "IPA",
+        "userId": "4feae3a2-b0d8-4a72-bd33-08018b0eda44",
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
@@ -118,7 +119,7 @@
                 false
             ]
         },
-        "style": {
+        "styleId": {
             "$id": "#/properties/style",
             "type": "string",
             "title": "The style schema",
@@ -147,6 +148,14 @@
             "examples": [
                 "Blank list of instructions"
             ]
+        },
+        "userId": {
+            "$id": "#/properties/userId",
+            "type": "string",
+            "title": "The userId schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": "4feae3a2-b0d8-4a72-bd33-08018b0eda44"
         },
         "Ingredients": {
             "$id": "#/properties/Ingredients",
