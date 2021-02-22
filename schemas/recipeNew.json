@@ -17,14 +17,17 @@
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
+                "key": 1,
                 "Name": "Munich Malt",
                 "quantity": 4
             },
             {
+                "key": 2,
                 "Name": "Citra",
                 "quantity": 2
             },
             {
+                "key": 3,
                 "Name": "Water",
                 "quantity": 7
             }
@@ -152,10 +155,12 @@
             "default": [],
             "examples": [
                 [{
+                        "key": 1,
                         "Name": "Munich Malt",
                         "quantity": 4
                     },
                     {
+                        "key": 2,
                         "Name": "Citra",
                         "quantity": 2
                     }
@@ -171,14 +176,26 @@
                     "description": "An explanation about the purpose of this instance.",
                     "default": {},
                     "examples": [{
+                        "key": 1,
                         "Name": "Munich Malt",
                         "quantity": 4
                     }],
                     "required": [
+                        "key",
                         "Name",
                         "quantity"
                     ],
                     "properties": {
+                        "key": {
+                            "$id": "#/properties/Ingredients/items/anyOf/0/properties/key",
+                            "type": "integer",
+                            "title": "The Name schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": 0,
+                            "examples": [
+                                1
+                            ]
+                        },
                         "Name": {
                             "$id": "#/properties/Ingredients/items/anyOf/0/properties/Name",
                             "type": "string",
@@ -191,7 +208,7 @@
                         },
                         "quantity": {
                             "$id": "#/properties/Ingredients/items/anyOf/0/properties/quantity",
-                            "type": "integer",
+                            "type": "number",
                             "title": "The quantity schema",
                             "description": "An explanation about the purpose of this instance.",
                             "default": 0,

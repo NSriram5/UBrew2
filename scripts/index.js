@@ -13,6 +13,7 @@ const authRoutes = require("../routes/auth");
 const usersRoutes = require("../routes/users");
 const recipesRoutes = require("../routes/recipes");
 const ingredientsRoutes = require("../routes/ingredients");
+const adminRoutes = require("../routes/admin");
 const { getRecipe } = require("../controllers/recipe")
 const { getUser } = require("../controllers/user")
 const path = require("path");
@@ -110,6 +111,7 @@ app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/ingredients", ingredientsRoutes);
+app.use("/admin", adminRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {

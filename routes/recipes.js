@@ -2,9 +2,12 @@
 
 const express = require("express");
 
+const jsonschema = require("jsonschema");
+
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
-//const Recipe = require("../models/recipe");
+const Recipe = require("../controllers/recipe");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
+const recipeNew = require("../schemas/recipeNew.json");
 const router = new express.Router();
 
 /** GET / => render recipes list
@@ -48,14 +51,16 @@ router.get("/:id", async function(req, res, next) {
  */
 router.post("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        const validator = jsonschema.validate(req.body, jobNewSchema);
+        debugger;
+        const validator = jsonschema.validate(req.body, recipeNew);
         if (!validator.valid) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-        const recipe = await Recipe.create(req.body);
+        const recipe = await Recipe.createRecipe(req.body);
 
-        return res.redirect(`/${recipe.id}`);
+        return res.json({ validMessage: "Recipe has been created" });
+        //return res.redirect(`/${recipe.id}`);
     } catch (err) {
         return next(err);
     }
