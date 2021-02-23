@@ -1,7 +1,7 @@
-module.exports = (sequelize, DataTypes) => {
-    const Recipe = sequelize.define('Recipe', {
-        // Model attributes are defined here
-        id: {
+module.exports = (sequelize, DataTypes)=>{
+    const Recipe = sequelize.define('Recipe',{
+    // Model attributes are defined here
+       id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
             default: false
         },
         instructions: {
-            type: DataTypes.BLOB,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         active: {
@@ -55,17 +55,22 @@ module.exports = (sequelize, DataTypes) => {
 
 
     });
-    Recipe.associate = (models) => {
-        Recipe.belongsTo(models.User, {
-            //as: 'userId',
-            foreignKey: 'userId',
+    Recipe.associate=(models)=>{
+        Recipe.belongsTo(models.Style,{
+            foreignKey:'styleId',
+            allowNull:true,
+        });
+        Recipe.belongsTo(models.User,{
+            foreignKey:'userId',
             allowNull: true,
         });
-        Recipe.belongsTo(models.Style, {
-            //as: 'styleId',
-            foreginKey: 'styleId',
-            allowNull: true,
+        Recipe.belongsToMany(models.Ingredient,{
+            through:'recipeIngredients',
+            foreignKey:"recipeId",
+            onDelete:'CASCADE'
         });
+        
+       
     }
     return Recipe;
 }
