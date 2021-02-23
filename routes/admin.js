@@ -1,4 +1,4 @@
-/** User routes for UBrew2 */
+/** Admin routes for UBrew2 */
 
 const express = require("express");
 
@@ -6,24 +6,25 @@ const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 const User = require("../controllers/user");
 const Recipe = require("../controllers/recipe");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
-const { createToken } = require("../helpers/tokens");
-const userNewSchema = require("../schemas/userNew.json");
-const userUpdateSchema = require("../schemas/userUpdate.json");
-//const { use } = require("../scripts");
+
+const { use } = require("../scripts");
 
 const router = new express.Router();
 
 
-/** GET / => Users list
+/** Admin view
  *
- * Returns rendered list of all users.
+ * Returns ...
  *
  * Authorization required: login, admin
  **/
 router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
     try {
-        const users = await User.findAll();
-        return res.render("users_list.html", { users });
+        const users = User.getUser();
+        const recipes = Recipe.getRecipe();
+        await users && await recipes;
+
+        return res.render("admin_dash.html", { users, recipes });
     } catch (err) {
         return next(err);
     }

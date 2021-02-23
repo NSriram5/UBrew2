@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>UBrew2 - Register</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/ico" href="img/UBrew2-Favicon.ico" />
+    <link href="css/all.min.css" rel="stylesheet" />
+    <link href="css/templatemo-style.css" rel="stylesheet" />
+
+</head>
+<!--
+
+Simple House
+
+https://templatemo.com/tm-539-simple-house
+
+-->
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder-2">
+            <div class="parallax-window-2" data-parallax="scroll" data-image-src="img/login_header.jpg">
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-md-6 col-12">
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title"></h1>
+                                <h6 class="tm-site-description"></h6>
+                            </div>
+                        </div>
+                        <nav class="col-md-6 col-12 tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
+                                <li class="tm-nav-li"><a href="/about" class="tm-nav-link">About</a></li>
+                                <li class="tm-nav-li"><a href="/login" class="tm-nav-link">Login</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <main>
+            <header class="row tm-welcome-section">
+                <h2 class="col-12 text-center tm-section-title">Create new recipe
+                </h2>
+            </header>
+            <div class="tm-container-inner">
+
+                <div class="row">
+                    <form id="createRecipeForm" action="" method="" class="tm-contact-form">
+
+                        <div class="form-group">
+                            <input id="nameInput" type="text" name="name" class="form-control" placeholder="name" required="" />
+                        </div>
+
+                        <div class="form-group">
+                            <input id="abvInput" type="number" name="abv" class="form-control" placeholder="ABV" required="" />
+                        </div>
+
+                        <div class="form-group">
+                            <input id="ogInput" type="number" name="og" class="form-control" placeholder="OG" required="" />
+                        </div>
+
+                        <div class="form-group">
+                            <input id="fgInput" type="number" name="lastName" class="form-control" placeholder="FG" required="" />
+                        </div>
+
+                        <div class="form-group">
+                            <input id="ibuInput" type="number" name="ibu" class="form-control" placeholder="IBU" required="" />
+                        </div>
+
+                        <div class="form-group">
+                            <textarea id="instructionsInput" name="instructions" class="form-control" placeholder="Instructions"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="publicInput" type="checkbox" name="public" class="form-control" />
+                            <label for="public">Make Public</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control" />
+                            <label for="shareable">Make Shareable</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="activeInput" type="checkbox" name="active" class="form-control" />
+                            <label for="active">Make Active</label>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="styleInput" name="style" class="form-control" required="">
+                                <option value="blank"> </option>
+                            {% for style in styles %}
+                                <option value="{{style.name}}">{{style.name}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="ingredientInput" type="text" name="ingredient" class="form-control" placeholder="Ingredient" required="" />
+                            <input id="ingredientqtyInput" type="number" name="ingredientqty" class="form-control" placeholder="Quantity" required="" />
+                            <button id="addingredientBtn">add ingredient</button>
+                        </div>
+                        <ul id="saved-ingredients">
+
+                        </ul>
+
+                        <div class="form-group tm-d-flex">
+                            <button id="createBtn" class="tm-btn tm-btn-success tm-btn-right">
+					            Create
+					          </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="tm-footer text-center">
+            <p>Copyright &copy; 2021 UBrew2 LLC</p>
+        </footer>
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/create-recipe.js"></script>
+    <script>
+        $(document).ready(function() {
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

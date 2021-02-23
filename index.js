@@ -6,6 +6,7 @@ const app = require("./scripts/index");
 const { configuration } = require('./config/config');
 if (configuration.environmentOptions.environment == "LOCAL") {
     console.log("I'm in local environment");
+    let forceOption = {force:true};
     test.runDatabaseTests();
 }
 if (configuration.environmentOptions.environment == "AWS") {

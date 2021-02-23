@@ -11,5 +11,11 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull: false
         }
     });
+    Ingredient.associate=(models)=>{
+        Ingredient.belongsToMany(models.Recipe,{
+            through:'recipeIngredients',
+            foreignKey:"ingredientId"
+        });
+    }
     return Ingredient;
 };

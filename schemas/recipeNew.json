@@ -1,0 +1,227 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "title": "The root schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "default": {},
+    "examples": [{
+        "Name": "Test Recipe",
+        "ABV": 5.6,
+        "OG": 1.062,
+        "FG": 1.01,
+        "IBU": 77,
+        "public": false,
+        "shareable": false,
+        "style": "IPA",
+        "active": true,
+        "instructions": "Blank list of instructions",
+        "Ingredients": [{
+                "key": 1,
+                "Name": "Munich Malt",
+                "quantity": 4
+            },
+            {
+                "key": 2,
+                "Name": "Citra",
+                "quantity": 2
+            },
+            {
+                "key": 3,
+                "Name": "Water",
+                "quantity": 7
+            }
+        ]
+    }],
+    "required": [
+        "Name",
+        "ABV",
+        "OG",
+        "FG",
+        "IBU",
+        "public",
+        "shareable",
+        "styleId",
+        "active",
+        "instructions",
+        "Ingredients",
+        "userId"
+    ],
+    "properties": {
+        "Name": {
+            "$id": "#/properties/Name",
+            "type": "string",
+            "title": "The Name schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Test Recipe"
+            ]
+        },
+        "ABV": {
+            "$id": "#/properties/ABV",
+            "type": "number",
+            "title": "The ABV schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                5.6
+            ]
+        },
+        "OG": {
+            "$id": "#/properties/OG",
+            "type": "number",
+            "title": "The OG schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                1.062
+            ]
+        },
+        "FG": {
+            "$id": "#/properties/FG",
+            "type": "number",
+            "title": "The FG schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0.0,
+            "examples": [
+                1.01
+            ]
+        },
+        "IBU": {
+            "$id": "#/properties/IBU",
+            "type": "integer",
+            "title": "The IBU schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": 0,
+            "examples": [
+                77
+            ]
+        },
+        "public": {
+            "$id": "#/properties/public",
+            "type": "boolean",
+            "title": "The public schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                false
+            ]
+        },
+        "shareable": {
+            "$id": "#/properties/shareable",
+            "type": "boolean",
+            "title": "The shareable schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                false
+            ]
+        },
+        "style": {
+            "$id": "#/properties/style",
+            "type": "string",
+            "title": "The style schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "IPA"
+            ]
+        },
+        "active": {
+            "$id": "#/properties/active",
+            "type": "boolean",
+            "title": "The active schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": false,
+            "examples": [
+                true
+            ]
+        },
+        "instructions": {
+            "$id": "#/properties/instructions",
+            "type": "string",
+            "title": "The instructions schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": "",
+            "examples": [
+                "Blank list of instructions"
+            ]
+        },
+        "Ingredients": {
+            "$id": "#/properties/Ingredients",
+            "type": "array",
+            "title": "The Ingredients schema",
+            "description": "An explanation about the purpose of this instance.",
+            "default": [],
+            "examples": [
+                [{
+                        "key": 1,
+                        "Name": "Munich Malt",
+                        "quantity": 4
+                    },
+                    {
+                        "key": 2,
+                        "Name": "Citra",
+                        "quantity": 2
+                    }
+                ]
+            ],
+            "additionalItems": true,
+            "items": {
+                "$id": "#/properties/Ingredients/items",
+                "anyOf": [{
+                    "$id": "#/properties/Ingredients/items/anyOf/0",
+                    "type": "object",
+                    "title": "The first anyOf schema",
+                    "description": "An explanation about the purpose of this instance.",
+                    "default": {},
+                    "examples": [{
+                        "key": 1,
+                        "Name": "Munich Malt",
+                        "quantity": 4
+                    }],
+                    "required": [
+                        "key",
+                        "Name",
+                        "quantity"
+                    ],
+                    "properties": {
+                        "key": {
+                            "$id": "#/properties/Ingredients/items/anyOf/0/properties/key",
+                            "type": "integer",
+                            "title": "The Name schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": 0,
+                            "examples": [
+                                1
+                            ]
+                        },
+                        "Name": {
+                            "$id": "#/properties/Ingredients/items/anyOf/0/properties/Name",
+                            "type": "string",
+                            "title": "The Name schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": "",
+                            "examples": [
+                                "Munich Malt"
+                            ]
+                        },
+                        "quantity": {
+                            "$id": "#/properties/Ingredients/items/anyOf/0/properties/quantity",
+                            "type": "number",
+                            "title": "The quantity schema",
+                            "description": "An explanation about the purpose of this instance.",
+                            "default": 0,
+                            "examples": [
+                                4
+                            ]
+                        }
+                    },
+                    "additionalProperties": true
+                }]
+            }
+        }
+    },
+    "additionalProperties": true
+}
