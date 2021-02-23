@@ -1,7 +1,7 @@
 async function addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients) {
     debugger;
     try {
-        const response = await axios.post('/recipes', { Name: typedName, ABV: typedABV, OG: typedOG, FG: typedFG, IBU: typedIBU, instructions: typedInstructions, public: selectedPublic, shareable: selectedShareable, active: selectedActive, style: selectedstyle, Ingredients: addedIngredients });
+        const response = await axios.post('/recipes', { Name: typedName, ABV: typedABV, OG: typedOG, FG: typedFG, IBU: typedIBU, instructions: typedInstructions, public: selectedPublic, shareable: selectedShareable, active: selectedActive, styleId: selectedstyle, Ingredients: addedIngredients });
         if (response.data.invalidMessage) {
             applyErrors(response.data.invalidMessage)
             return;
