@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes)=>{
             default: false
         },
         instructions: {
-            type: DataTypes.BLOB,
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         active: {
@@ -61,9 +61,15 @@ module.exports = (sequelize, DataTypes)=>{
             allowNull:true,
         });
         Recipe.belongsTo(models.User,{
-            foreignKey:'userid',
+            foreignKey:'userId',
             allowNull: true,
         });
+        Recipe.belongsToMany(models.Ingredient,{
+            through:'recipeIngredients',
+            foreignKey:"recipeId",
+            onDelete:'CASCADE'
+        });
+        
        
     }
     return Recipe;

@@ -3,8 +3,6 @@ const Ingredient= require('../models').Ingredient;
 const Op = require('../models/').Sequelize.Op;
 module.exports={
     createIngredient(ingredient){
-        console.log(Ingredient);
-        console.log(ingredient);
         let whereclause ={};
         whereclause.Name={[Op.iLike]:'%' + ingredient.Name + '%'};
         return Ingredient
@@ -38,7 +36,7 @@ module.exports={
         return Ingredient
             .findAll({
                 where: whereclause,
-                attributes:["Name", "Season"],
+                attributes:["Name"],
             })
             .then((result)=>{
                 console.log('Ingredient Found');
