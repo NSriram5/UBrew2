@@ -9,7 +9,7 @@ const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expre
 const { createToken } = require("../helpers/tokens");
 const userNewSchema = require("../schemas/userNew.json");
 const userUpdateSchema = require("../schemas/userUpdate.json");
-const { use } = require("../scripts");
+//const { use } = require("../scripts");
 
 const router = new express.Router();
 

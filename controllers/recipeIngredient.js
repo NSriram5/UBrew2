@@ -14,6 +14,49 @@ module.exports={
                     console.log('THere was an error in the bulk creation of recipe ingredients');
                     return err;
                 });
-    }
+    },
+    
+    getRecipeIngredients(filter){
+        if(filter==undefined){
+            return {error: 'You must submit filter criteria'};
+        }
+        let whereclause={};
+        if(filter.recipeId){
+            where.recipeId=filter.recipeId;
+        }
+        else if(filter.ingredientId){
+            where.ingredientId = filter.ingredientId
+        }
+        else{
+            return {error: 'you must submit filter criteria'};
+        }
+
+        return RecipeIngredient
+            .findAll({
+                where:whereclause,
+                returning:['id','recipeId','ingredientId','quantity'],
+                raw:true
+            })
+            .catch((error)=>{
+                console.log(error);
+                return error;
+            });
+    },
+    updateOrCreateRecipeIngredient(recipeIngredient){
+       
+        return RecipeIngredient
+                .upsert(
+                    recipeIngredient)
+                .then((result)=>{
+                    console.log(result);
+                    console.log('successfully created ingredients');
+                    return result;
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    console.log('THere was an error in the bulk creation of recipe ingredients');
+                    return err;
+                });
+    },
 
 }
