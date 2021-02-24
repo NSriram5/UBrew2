@@ -244,21 +244,29 @@ module.exports={
             });
     },
     deleteRecipe(token) {
-        let whereclause;
+        let whereclause ={};
         whereclause.token = {
             [Op.eq]: token
         };
         return Recipe
             .findOne({
                 where: whereclause,
-                attributes: ['id']
-
+                attributes: ['id'],
+                raw:true,
             })
             .then((result) => {
-                let foundRecipe;
+                console.log(result);
+                let foundRecipe = {};
                 foundRecipe.id = result.id;
                 foundRecipe.active = false;
-                Recipe.update(found);
+                Recipe.update(
+                    foundRecipe,
+                    {
+                        where: {id:foundRecipe.id},
+                        returning: true,
+                        raw:true
+                    })
+                .then((result)=>{console.log(result);});
             })
             .catch((error) => {
                 console.log(error);
@@ -290,7 +298,7 @@ module.exports={
             console.log('recipe doesn\'t exist'); 
             return {error: true, message:'The recipe doesn\'t exist. please create it first.'};
         }
-        let returnedRecipeIngredients = RecipeIngredient.getRecipeIngredients({recipeId:recipe.id});
+        let returnRecipeIngredients = RecipeIngredient.getRecipeIngredients({recipeId:recipe.id});
         let recipeIngredientList=[];
         for(element in  recipe.Ingredients){
             let indingredient={};
@@ -301,7 +309,7 @@ module.exports={
                     let recipeIngredientItem ={};
                     recipeIngredientItem.ingredientId = result.id;
                     recipeIngredientItem.quantity = recipe.Ingredients[element].quantity;
-                    recipeIngredientItem.recipId = recipe.id;
+                    recipeIngredientItem.recipeId = recipe.id;
                     recipeIngredientList.push(recipeIngredientItem);
                 })
                 .catch((exception) => {
@@ -322,36 +330,42 @@ module.exports={
         newRecipe.userId = recipe.userId;
         newRecipe.active = recipe.active;
         newRecipe.instructions = recipe.instructions;
-        await returnedRecipeIngredients;
-        var alteredList = [];
-        var newList = [];
-        for(newIngredient in recipeIngredientList){
+        newRecipe.id = recipe.id;
+        let returnedRecipeIngredients= await returnRecipeIngredients;
+        for(temp in recipeIngredientList){
+            newIngredient = recipeIngredientList[temp];
             var altered = true;
             var newRi = true;
+            console.log('new Ingredient');
+            console.log(newIngredient);
+            console.log(returnedRecipeIngredients);
             for( existing in returnedRecipeIngredients ){
-                if(existing.ingredientId == newIngredient.ingredientId){
+                console.log(newIngredient.ingredientId);
+                console.log(returnedRecipeIngredients[existing].ingredientId );
+                if(returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId){
                     newRi = false;
-                    newIngredient.id=existing.id;
-                    if(existing.quantity == newIngredient.quantity){
+                    newIngredient.id=returnedRecipeIngredients[existing].id;
+                    if(returnedRecipeIngredients[existing].quantity == newIngredient.quantity){
                         altered = false;
                     }
                 }
             }
             if(altered || newRi){
-                RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient)
+                console.log(newIngredient);
+                RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient);
             }
         }
         return Recipe
             .update(
                 newRecipe, 
-                {returning: ['Name','ABV', 'OG', 'FG','IBU',
-                            'public','shareable','userId',
-                            'active','instructions','styleId','id'
-                ]})
+                {
+                    where: {id:newRecipe.id},
+                    returning: true,
+                    raw:true
+                })
             .then((result)=>{
-                for(ri in recipeIngredientList){
-                    recipeIngredientList[ri].recipeId = result.dataValues.id;
-                };
+                console.log(result);
+               
                 //console.log('Recipe updated');
                 //console.log(recipeIngredientList);
                 /*RecipeIngredient
