@@ -72,9 +72,11 @@ module.exports = {
         whereclause = {};
         let offsetClause = {};
         let limitClause = {};
-        whereclause.public = {
-            [Op.eq]: true
-        };
+        if (!filter.isAdmin && !filter.isUser) {
+            whereclause.public = {
+                [Op.eq]: true
+            };
+        }
         if (filter == undefined) { filter = {}; }
         if (filter.name) {
             whereclause.Name = {
@@ -291,7 +293,7 @@ module.exports = {
     },
     async updateRecipe(recipe) {
         var res = await Recipe.findOne({
-            where: { Name: recipe.Name },
+            where: { id: recipe.id },
             raw: true
         });
         //console.log(res);

@@ -75,7 +75,6 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
  */
 router.patch("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        debugger;
         const recipe = await Recipe.getFullRecipe({ id: req.body.id });
 
         if (res.locals.user.userId != recipe.userId && !res.locals.user.admin) {

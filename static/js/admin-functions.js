@@ -5,13 +5,38 @@ function routeClick(e) {
     if (e.target.classList.contains("reset-password")) {
         passwordAssignMode(e);
     } else if (e.target.classList.contains("user-disable")) {
+        toggleUserDisable(e);
 
     } else if (e.target.classList.contains("recipe-disable")) {
+        toggleRecipeDisable(e);
 
     } else if (e.target.classList.contains("recipe-style")) {
         styleChangeMode(e);
     } else if (e.target.classList.contains("style-select")) {} else if (e.target.classList.contains("password-set")) {
         passwordSetMode(e);
+    }
+}
+
+async function toggleUserDisable(e) {
+    const userId = e.target.dataset.id
+
+    if (e.target.textContent == "Disable") {
+        const response = await axios.patch("admin/disableUser", { userId, disabled: true })
+        e.target.innerHTML = "Enable";
+    } else if (e.target.textContent == "Enable") {
+        const response = await axios.patch("admin/disableUser", { userId, disabled: false })
+        e.target.innerHTML = "Disable";
+    }
+}
+
+async function toggleRecipeDisable(e) {
+    const id = e.target.dataset.id
+    if (e.target.textContent == "Disable") {
+        const response = await axios.patch("admin/disableRecipe", { id, active: false })
+        e.target.innerHTML = "Enable";
+    } else if (e.target.textContent == "Enable") {
+        const response = await axios.patch("admin/disableRecipe", { id, active: true })
+        e.target.innerHTML = "Disable";
     }
 }
 
@@ -53,15 +78,6 @@ async function styleAssign(e) {
     e.target.remove();
 
 }
-
-function addIngredient(e) {}
-
-function clickIngredient(e) {}
-
-function clickaddRecipe(e) {
-
-}
-
 
 
 $(function() {

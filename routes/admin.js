@@ -19,7 +19,7 @@ const router = new express.Router();
 router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
     try {
         let usersPromise = User.getUser();
-        let recipesPromise = Recipe.getRecipe();
+        let recipesPromise = Recipe.getRecipe({ isAdmin: true });
         const [users, recipes] = await Promise.all([usersPromise, recipesPromise]);
         return res.render("admin-dash.html", { users, recipes: recipes.rows });
     } catch (err) {
@@ -54,15 +54,45 @@ router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
  *
  * Authorization required: admin
  **/
-router.get("/password", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
+router.patch("/password", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
     try {
-        User.updateUser({ userId: req.body.userId, password: req.body.newPassword })
-        return res.json({ validMessage: "Password created" });
+        const response = await User.updateUser({ userId: req.body.userId, password: req.body.newPassword })
+        return res.json({ validMessage: "Password changed" });
     } catch (err) {
         return next(err);
     }
 });
 
+/** PATCH /disableUser
+ *  
+ *  Changes the state to the desired disable/enable condition
+ * 
+ *  Authorization required: admin
+ */
+router.patch("/disableUser", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
+    try {
+
+        const response = await User.updateUser({ userId: req.body.userId, disabled: req.body.disabled })
+        return res.json({ validMessage: "User disabled condition set" });
+    } catch (err) {
+        return next(err);
+    }
+});
+
+/** PATCH /disableRecipe
+ *  
+ *  Changes the state to the desired disable/enable condition
+ * 
+ *  Authorization required: admin
+ */
+router.patch("/disableRecipe", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
+    try {
+        const response = await Recipe.updateRecipe({ id: req.body.id, active: req.body.active })
+        return res.json({ validMessage: "Recipe active condition set" });
+    } catch (err) {
+        return next(err);
+    }
+});
 
 /** PATCH /[username] => { user }
  *

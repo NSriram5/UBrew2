@@ -68,7 +68,6 @@
                             <th>User</th>
                             <th>Link</th>
                             <th>Public</th>
-                            <th>Active</th>
                             <th></th>
                         </tr>
                         {% for recipe in recipes %}
@@ -80,8 +79,11 @@
                             <td>{{recipe.userId}}</td>
                             <td><a href="/recipes/{{recipe.token}}">Link to</a></td>
                             <td>{{recipe.public}}
-                            <td>{{recipe.active}}</td>
-                            <td><button class="recipe-disable" data-id="{{recipe.ID}}">Disable</button></td>
+                            {% if recipe.active %}
+                            <td><button class="recipe-disable" data-id="{{recipe.id}}">Disable</button></td>
+                            {% else %}
+                            <td><button class="recipe-disable" data-id="{{recipe.id}}">Enable</button></td>
+                            {% endif%}
                         </tr>
                         {% endfor %}
                     </table>
@@ -108,7 +110,12 @@
                             <td>{{user.lastName}}</td>
                             <td>{{user.admin}}</td>
                             <td><button class="reset-password" data-id="{{user.userId}}">reset password</td>
-                            <td><button class="user-disable" data-id="{{user.userId}}">Disable</a></td>
+                            <td>
+                            {% if user.disabled %}
+                            <button class="user-disable" data-id="{{user.userId}}">Enable</a></td>
+                            {% else %}
+                            <button class="user-disable" data-id="{{user.userId}}">Disable</a></td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </table>
