@@ -14,8 +14,9 @@ const usersRoutes = require("../routes/users");
 const recipesRoutes = require("../routes/recipes");
 const ingredientsRoutes = require("../routes/ingredients");
 const adminRoutes = require("../routes/admin");
-const { getRecipe } = require("../controllers/recipe")
-const { getUser } = require("../controllers/user")
+const stylesRoutes = require("../routes/styles");
+const { getRecipe } = require("../controllers/recipe");
+const { getUser } = require("../controllers/user");
 const path = require("path");
 const nunjucks = require("nunjucks");
 const bodyParser = require("body-parser");
@@ -112,6 +113,7 @@ app.use("/users", usersRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/ingredients", ingredientsRoutes);
 app.use("/admin", adminRoutes);
+app.use("/styles", stylesRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
