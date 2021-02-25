@@ -99,8 +99,6 @@ module.exports = {
     async authenticateUser(email, password) {
         try {
             const user = await this.getUser({ email: email }, true);
-            console.log(user[0]);
-            console.log(password);
             if (user[0] && user[0].passwordHash) {
                 const valid = await bcrypt.compare(password, user[0].passwordHash);
                 delete user[0].passwordHash;
