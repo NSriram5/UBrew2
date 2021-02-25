@@ -3,18 +3,18 @@ const Recipe = require('../models').Recipe;
 const Ingredient = require('./ingredients');
 const Op = require('../models/').Sequelize.Op;
 const RecipeIngredient = require('./recipeIngredient');
-const RecipeIngredientModel=require('../models').recipeIngredients;
-const Ingredientmodel= require('../models').Ingredient;
-module.exports={
-    async createRecipe(recipe){
-        let recipeIngredientList=[];
-        for(element in  recipe.Ingredients){
-            let indingredient={};
+const RecipeIngredientModel = require('../models').recipeIngredients;
+const Ingredientmodel = require('../models').Ingredient;
+module.exports = {
+    async createRecipe(recipe) {
+        let recipeIngredientList = [];
+        for (element in recipe.Ingredients) {
+            let indingredient = {};
             indingredient.Name = recipe.Ingredients[element].Name;
-             await Ingredient
+            await Ingredient
                 .createIngredient(indingredient)
-                .then((result)=>{
-                     let recipeIngredientItem ={};
+                .then((result) => {
+                    let recipeIngredientItem = {};
                     recipeIngredientItem.ingredientId = result.id;
                     recipeIngredientItem.quantity = recipe.Ingredients[element].quantity;
                     recipeIngredientList.push(recipeIngredientItem);
@@ -24,27 +24,28 @@ module.exports={
                     console.log('Error creating Ingredient');
                 })
         };
-         let newRecipe={};
+        let newRecipe = {};
         newRecipe.Name = recipe.Name;
         newRecipe.ABV = recipe.ABV;
         newRecipe.OG = recipe.OG;
         newRecipe.FG = recipe.FG;
         newRecipe.IBU = recipe.IBU;
         newRecipe.public = recipe.public;
-        newRecipe.shareable=recipe.shareable;
+        newRecipe.shareable = recipe.shareable;
         newRecipe.styleId = recipe.styleId;
         newRecipe.userId = recipe.userId;
         newRecipe.active = recipe.active;
         newRecipe.instructions = recipe.instructions;
-         return Recipe
+        return Recipe
             .create(
-                newRecipe, 
-                {returning: ['Name','ABV', 'OG', 'FG','IBU',
-                            'public','shareable','userId',
-                            'active','instructions','styleId','id'
-                ]})
-            .then((result)=>{
-                for(ri in recipeIngredientList){
+                newRecipe, {
+                    returning: ['Name', 'ABV', 'OG', 'FG', 'IBU',
+                        'public', 'shareable', 'userId',
+                        'active', 'instructions', 'styleId', 'id'
+                    ]
+                })
+            .then((result) => {
+                for (ri in recipeIngredientList) {
                     recipeIngredientList[ri].recipeId = result.dataValues.id;
                 };
                 console.log('Recipe Created');
@@ -52,7 +53,7 @@ module.exports={
                 RecipeIngredient
                     .bulkCreate(recipeIngredientList)
                     .then((result) => {
-                       // console.log(result);
+                        // console.log(result);
                         //console.log('Recipe Ingredients Bulk Created');
                     })
                     .catch((riError) => {
@@ -69,12 +70,12 @@ module.exports={
     getRecipe(filter) {
         let whereclause;
         whereclause = {};
-        let offsetClause={};
-        let limitClause={};
+        let offsetClause = {};
+        let limitClause = {};
         whereclause.public = {
-            [Op.eq]:true
+            [Op.eq]: true
         };
-        if(filter == undefined){filter = {};}
+        if (filter == undefined) { filter = {}; }
         if (filter.name) {
             whereclause.Name = {
                 [Op.iLike]: '%' + filter.name + '%'
@@ -95,39 +96,38 @@ module.exports={
                 [Op.eq]: filter.userId
             };
         }
-        if(filter.shareable){
+        if (filter.shareable) {
             whereclause.shareable = {
-                [Op.eq]:filter.shareable
+                [Op.eq]: filter.shareable
             };
         }
-        if(filter.ABV){
+        if (filter.ABV) {
             whereclause.ABV = {
-                [Op.eq]:filter.ABV
+                [Op.eq]: filter.ABV
             };
         }
-        if(filter.IBU){
+        if (filter.IBU) {
             whereclause.IBU = {
-                [Op.eq]:filter.IBU
+                [Op.eq]: filter.IBU
             };
         }
-        if(filter.offset){
+        if (filter.offset) {
             offsetClause.offset = filter.offset;
-        }
-        else{offsetClause.offset=0;}
-        if(filter.limit){
+        } else { offsetClause.offset = 0; }
+        if (filter.limit) {
             limitClause.limit = filter.limit;
-        }
-        else{limitClause.limit = 21;}
+        } else { limitClause.limit = 21; }
         //console.log(whereclause);
         return Recipe
             .findAndCountAll({
-                model:Recipe,
+                model: Recipe,
                 where: whereclause,
                 limitClause,
                 offsetClause,
-                raw:true,
-                attributes:['id','Name', 'ABV', 'OG', 'FG','IBU', 'token', 
-                'styleId', 'public', 'shareable', 'instructions','userId'],
+                raw: true,
+                attributes: ['id', 'Name', 'ABV', 'OG', 'FG', 'IBU', 'token',
+                    'styleId', 'public', 'shareable', 'active', 'instructions', 'userId', 'active'
+                ],
 
             })
             .then((result) => {
@@ -142,13 +142,13 @@ module.exports={
     getFullRecipe(filter) {
         let whereclause;
         whereclause = {};
-        let offsetClause={};
-        let limitClause={};
+        let offsetClause = {};
+        let limitClause = {};
         whereclause.public = {
-            [Op.eq]:true
+            [Op.eq]: true
         };
         //console.log(filter);
-        if(filter == undefined){filter = {};}
+        if (filter == undefined) { filter = {}; }
         if (filter.name) {
             whereclause.Name = {
                 [Op.iLike]: '%' + filter.name + '%'
@@ -169,52 +169,51 @@ module.exports={
                 [Op.eq]: filter.userId
             };
         }
-        if(filter.shareable){
+        if (filter.shareable) {
             whereclause.shareable = {
-                [Op.eq]:filter.shareable
+                [Op.eq]: filter.shareable
             };
         }
-        if(filter.ABV){
+        if (filter.ABV) {
             whereclause.ABV = {
-                [Op.eq]:filter.ABV
+                [Op.eq]: filter.ABV
             };
         }
-        if(filter.IBU){
+        if (filter.IBU) {
             whereclause.IBU = {
-                [Op.eq]:filter.IBU
+                [Op.eq]: filter.IBU
             };
         }
-        if(filter.id){
+        if (filter.id) {
             whereclause.id = {
-                [Op.eq]:filter.id
+                [Op.eq]: filter.id
             };
         }
-        if(filter.offset){
+        if (filter.offset) {
             offsetClause.offset = filter.offset;
-        }
-        else{offsetClause.offset=0;}
-        if(filter.limit){
+        } else { offsetClause.offset = 0; }
+        if (filter.limit) {
             limitClause.limit = filter.limit;
-        }
-        else{limitClause.limit = 21;}
+        } else { limitClause.limit = 21; }
         //console.log(whereclause);
         return Recipe
             .findAll({
-                
-                raw:true,
-                include:[
-                    {model:Ingredientmodel, attributes:["id", "Name"]},
-                //    {model:RecipeIngredientModel,attributes:['quantity']}
+
+                raw: true,
+                include: [
+                    { model: Ingredientmodel, attributes: ["id", "Name"] },
+                    //    {model:RecipeIngredientModel,attributes:['quantity']}
                 ],
                 where: whereclause,
                 limitClause,
                 offsetClause,
                 //group:['Ingredients.id', 'Recipe.id','Ingredients->recipeIngredients.quantity'],
-                
-                nest:true,
-                attributes:['id','Name', 'ABV', 'OG', 'FG','IBU', 'token', 
-                'styleId', 'public', 'shareable', 'instructions','userId'],
-            //}]
+
+                nest: true,
+                attributes: ['id', 'Name', 'ABV', 'OG', 'FG', 'IBU', 'token',
+                    'styleId', 'public', 'shareable', 'instructions', 'userId'
+                ],
+                //}]
             })
             .then((result) => {
                 //console.log(result);
@@ -222,16 +221,16 @@ module.exports={
                 //console.log(tempRes.Ingredients);
                 IngrdeientArray = [];
                 //tempRes.Ingredients = [];
-                for(index in result){
+                for (index in result) {
                     //console.log(result);
-                    var item =result[index];
-                    var ing =item.Ingredients;
+                    var item = result[index];
+                    var ing = item.Ingredients;
                     //console.log('this is item?');
                     //console.log(item);
                     //console.log(item.Ingredients.recipeIngredients);
                     //console.log(ing.recipeIngredients);
                     //console.log(result[index].Ingredients)
-                    ing.quantity=result[index].Ingredients.recipeIngredients.quantity;
+                    ing.quantity = result[index].Ingredients.recipeIngredients.quantity;
                     delete ing.recipeIngredients;
                     IngrdeientArray.push(ing);
                 }
@@ -265,40 +264,43 @@ module.exports={
                 console.log('Error updating the recipe');
             });
     },
-    getMyRecipes(userid){
-        let whereclause={};
-        whereclause.userId ={[Op.eq]:userid};
+    getMyRecipes(userid) {
+        let whereclause = {};
+        whereclause.userId = {
+            [Op.eq]: userid
+        };
         return Recipe
             .findAll({
-                where:whereclause,
-                raw:true,
-                attributes:['id','Name', 'ABV', 'OG', 'FG','IBU', 'token', 
-                'styleId', 'public', 'shareable', 'instructions','userId'],
+                where: whereclause,
+                raw: true,
+                attributes: ['id', 'Name', 'ABV', 'OG', 'FG', 'IBU', 'token',
+                    'styleId', 'public', 'shareable', 'instructions', 'userId'
+                ],
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log(error);
                 return error;
             })
     },
-    async updateRecipe(recipe){
+    async updateRecipe(recipe) {
         var res = await Recipe.findOne({
-            where:{Name:recipe.Name},
-            raw:true
+            where: { Name: recipe.Name },
+            raw: true
         });
         //console.log(res);
-        if(!res){
-            console.log('recipe doesn\'t exist'); 
-            return {error: true, message:'The recipe doesn\'t exist. please create it first.'};
+        if (!res) {
+            console.log('recipe doesn\'t exist');
+            return { error: true, message: 'The recipe doesn\'t exist. please create it first.' };
         }
-        let returnedRecipeIngredients = RecipeIngredient.getRecipeIngredients({recipeId:recipe.id});
-        let recipeIngredientList=[];
-        for(element in  recipe.Ingredients){
-            let indingredient={};
+        let returnedRecipeIngredients = RecipeIngredient.getRecipeIngredients({ recipeId: recipe.id });
+        let recipeIngredientList = [];
+        for (element in recipe.Ingredients) {
+            let indingredient = {};
             indingredient.Name = recipe.Ingredients[element].Name;
-             await Ingredient
+            await Ingredient
                 .createIngredient(indingredient)
-                .then((result)=>{
-                    let recipeIngredientItem ={};
+                .then((result) => {
+                    let recipeIngredientItem = {};
                     recipeIngredientItem.ingredientId = result.id;
                     recipeIngredientItem.quantity = recipe.Ingredients[element].quantity;
                     recipeIngredientItem.recipId = recipe.id;
@@ -309,15 +311,15 @@ module.exports={
                     console.log('Error creating Ingredient');
                 })
         };
-        
-        let newRecipe={};
+
+        let newRecipe = {};
         newRecipe.Name = recipe.Name;
         newRecipe.ABV = recipe.ABV;
         newRecipe.OG = recipe.OG;
         newRecipe.FG = recipe.FG;
         newRecipe.IBU = recipe.IBU;
         newRecipe.public = recipe.public;
-        newRecipe.shareable=recipe.shareable;
+        newRecipe.shareable = recipe.shareable;
         newRecipe.styleId = recipe.styleId;
         newRecipe.userId = recipe.userId;
         newRecipe.active = recipe.active;
@@ -325,31 +327,32 @@ module.exports={
         await returnedRecipeIngredients;
         var alteredList = [];
         var newList = [];
-        for(newIngredient in recipeIngredientList){
+        for (newIngredient in recipeIngredientList) {
             var altered = true;
             var newRi = true;
-            for( existing in returnedRecipeIngredients ){
-                if(existing.ingredientId == newIngredient.ingredientId){
+            for (existing in returnedRecipeIngredients) {
+                if (existing.ingredientId == newIngredient.ingredientId) {
                     newRi = false;
-                    newIngredient.id=existing.id;
-                    if(existing.quantity == newIngredient.quantity){
+                    newIngredient.id = existing.id;
+                    if (existing.quantity == newIngredient.quantity) {
                         altered = false;
                     }
                 }
             }
-            if(altered || newRi){
+            if (altered || newRi) {
                 RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient)
             }
         }
         return Recipe
             .update(
-                newRecipe, 
-                {returning: ['Name','ABV', 'OG', 'FG','IBU',
-                            'public','shareable','userId',
-                            'active','instructions','styleId','id'
-                ]})
-            .then((result)=>{
-                for(ri in recipeIngredientList){
+                newRecipe, {
+                    returning: ['Name', 'ABV', 'OG', 'FG', 'IBU',
+                        'public', 'shareable', 'userId',
+                        'active', 'instructions', 'styleId', 'id'
+                    ]
+                })
+            .then((result) => {
+                for (ri in recipeIngredientList) {
                     recipeIngredientList[ri].recipeId = result.dataValues.id;
                 };
                 //console.log('Recipe updated');

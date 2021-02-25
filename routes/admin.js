@@ -10,25 +10,18 @@ const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expre
 const router = new express.Router();
 
 
-function sayHello(req, res, next) {
-    console.log("Hello!");
-    return next();
-}
-
 /** Admin view
  *
  * Returns ...
  *
  * Authorization required: login, admin
  **/
-router.get("/", ensureLoggedIn, sayHello, ensureAdmin, async function(req, res, next) {
+router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
     try {
-        const users = User.getAllUsers();
-        const recipes = Recipe.getAllRecipes();
-        await users && await recipes;
-
-        debugger;
-        return res.render("admin_dash.html", { users, recipes });
+        let usersPromise = User.getUser();
+        let recipesPromise = Recipe.getRecipe();
+        const [users, recipes] = await Promise.all([usersPromise, recipesPromise]);
+        return res.render("admin-dash.html", { users, recipes: recipes.rows });
     } catch (err) {
         return next(err);
     }
@@ -54,6 +47,22 @@ router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
         return next(err);
     }
 })
+
+/** PATCH /password => { userId, newPassword }
+ *
+ * Updates the password of the user
+ *
+ * Authorization required: admin
+ **/
+router.get("/password", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
+    try {
+        User.updateUser({ userId: req.body.userId, password: req.body.newPassword })
+        return res.json({ validMessage: "Password created" });
+    } catch (err) {
+        return next(err);
+    }
+});
+
 
 /** PATCH /[username] => { user }
  *

@@ -19,11 +19,9 @@
         <!-- Logo & Site Name -->
         <div class="placeholder">
             <div class="parallax-window" data-parallax="scroll" data-image-src="img/home-page.jpg">
-                {% if user.userId %}
                 <div id="welcome-message" class="welcome-message">
                     Welcome {{user.userName}}
                 </div>
-                {% else %} {% endif%}
                 <div class="tm-header">
                     <div class="row tm-header-inner">
                         <div class="col-md-6 col-12">
@@ -36,7 +34,6 @@
                         <nav class="col-md-6 col-12 tm-nav">
                             <ul class="tm-nav-ul">
                                 <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
-                                {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -70,16 +67,20 @@
                             <th>ABV</th>
                             <th>User</th>
                             <th>Link</th>
-                            <th>Disable</th>
+                            <th>Public</th>
+                            <th>Active</th>
+                            <th></th>
                         </tr>
                         {% for recipe in recipes %}
                         <tr>
-                            <td>Need recipe ID</td>
+                            <td>{{recipe.id}}</td>
                             <td>{{recipe.Name}}</td>
-                            <td>Need recipe style</td>
+                            <td data-id="{{recipe.id}}"class="recipe-style">{{recipe.styleId}}</td>
                             <td>{{recipe.ABV}}</td>
-                            <td>Need recipe user</td>
-                            <td><a href="/recipes/{{recipe.ID}}">Link to</a></td>
+                            <td>{{recipe.userId}}</td>
+                            <td><a href="/recipes/{{recipe.token}}">Link to</a></td>
+                            <td>{{recipe.public}}
+                            <td>{{recipe.active}}</td>
                             <td><button class="recipe-disable" data-id="{{recipe.ID}}">Disable</button></td>
                         </tr>
                         {% endfor %}
@@ -125,6 +126,7 @@
     </div>
     <script src="../js/jquery.min.js"></script>
     <script src="../js/parallax.min.js"></script>
+    <script src="../js/admin-functions.js"></script>
     <script>
         $(document).ready(function() {
             // Handle click on paging links
