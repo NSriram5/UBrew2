@@ -25,7 +25,7 @@ module.exports = {
         //console.log(result);
         let tempUser={};
         tempUser.userId=result[0].userId;
-        tempUser.disabled = true;
+        tempUser.firstName = 'Moose';
         var userUpdateResult = await user.updateUser(tempUser);
         //console.log('userUpdateResult');
         //console.log(userUpdateResult[1][0].dataValues);
@@ -69,10 +69,16 @@ module.exports = {
         await createRecipes(recipeObj);
         var recipeResult = await recipe.getRecipe();
         var fullRecipeResult = await recipe.getFullRecipe({id:recipeResult.rows[0].id})
+        console.log('full recipe result');
         console.log(fullRecipeResult);
-        //recipeResult.rows[1].IBU=7
-        //await recipe.udpateRecipe(recipeResult.rows[0])
+        fullRecipeResult.IBU=345;
+        const deleteRecipe = fullRecipeResult;
+        await recipe.updateRecipe(fullRecipeResult);
         console.log(recipeResult.rows[0].instructions);
-        
+        await recipe.deleteRecipe(deleteRecipe.token);
+        const updatePass = await user.updateUser({userId:tempUser.userId, password:'plaintText!'});
+        console.log(updatePass);
+        const userdisable = await user.disableUser(tempUser.userId);
+        console.log(userdisable);
     }
 }

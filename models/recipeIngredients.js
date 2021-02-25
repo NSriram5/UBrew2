@@ -4,8 +4,12 @@ module.exports = (sequelize, DataTypes)=>{
         quantity:{
             type:DataTypes.FLOAT,
             allowNull:true
-        }
-
+        },
+        id:{
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
     });
     RecipeIngredient.associate=(models)=>{
         RecipeIngredient.belongsTo(models.Recipe,{

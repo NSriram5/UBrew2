@@ -67,8 +67,12 @@ module.exports = {
                 console.log(error, 'There was an error in the get');
             });
     },
-    updateUser(user) {
+    async updateUser(user) {
         let whereclause = {};
+        if (user.password) {
+            user.passwordHash = await bcrypt.hash(user.password, BCRYPT_WORK_FACTOR);
+            delete user.password;
+        }
         whereclause.userId = user.userId;
         return User
             .update(
@@ -76,6 +80,7 @@ module.exports = {
                     returning: ['firstName', 'lastName', 'email', 'admin',
                         'disabled', 'userId'
                     ],
+                    raw:true,
                     where: whereclause
                 }
             )
@@ -90,7 +95,6 @@ module.exports = {
                 console.log(error, 'There was an error in the create');
             });
 
-        return results;
     },
     async authenticateUser(email, password) {
         try {
@@ -111,6 +115,30 @@ module.exports = {
             console.log(error, 'There was an error authenticating the user');
             return false;
         }
+    },
+    disableUser(userId){
+        let whereclause = {};
+        whereclause.userId = userId;
+        return User
+            .update(
+                {disabled:true}, {
+                    returning: true,
+                    where: whereclause,
+                    raw:true
+                }
+            )
+            .then((result) => {
+                //console.log('User updated');
+                //const userResult = result.get({plain:true});
+
+                //console.log(result);
+                return result;
+            })
+            .catch(error => {
+                console.log(error, 'There was an error in the create');
+            });
+
+        return results;
     }
 
 }
