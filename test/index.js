@@ -52,21 +52,23 @@ module.exports = {
         //console.log(recipeObj);
        // recipeObj.userid = tempUser.userId;
         //recipeObj.styleId=1;
-        createRecipes = async function(asyncrecipeObj) {
+        createRecipes = async function(asyncrecipeObj, userId) {
             console.log(asyncrecipeObj);
             if(Array.isArray(asyncrecipeObj)){
                 for(item in asyncrecipeObj){
-                    item.styleId = 1;
+                    asyncrecipeObj[item].userId = userId;
+                    //item.styleId = 1;
                     console.log(asyncrecipeObj[item]);
                     rs = await recipe.createRecipe(asyncrecipeObj[item]);
                     console.log(rs);
                 }
             }else{
+                recipeCreateResult.userId = userId;
                 var recipeCreateResult = await recipe.createRecipe(asyncrecipeObj); 
                 return recipeCreateResult;
             }
         };
-        await createRecipes(recipeObj);
+        await createRecipes(recipeObj, tempUser.userId);
         var recipeResult = await recipe.getRecipe();
         var fullRecipeResult = await recipe.getFullRecipe({id:recipeResult.rows[0].id})
         console.log('full recipe result');
