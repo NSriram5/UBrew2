@@ -5,6 +5,8 @@ const Op = require('../models/').Sequelize.Op;
 const RecipeIngredient = require('./recipeIngredient');
 const RecipeIngredientModel=require('../models').recipeIngredients;
 const Ingredientmodel= require('../models').Ingredient;
+const styleModel= require('../models').Style;
+const userModel = require('../models').User;
 module.exports={
     async createRecipe(recipe){
         let recipeIngredientList=[];
@@ -125,6 +127,9 @@ module.exports={
                 where: whereclause,
                 limitClause,
                 offsetClause,
+                include:[
+                    {model:styleModel },
+                ],
                 raw:true,
                 attributes:['id','Name', 'ABV', 'OG', 'FG','IBU', 'token', 
                 'styleId', 'public', 'shareable', 'instructions','userId'],
@@ -204,7 +209,8 @@ module.exports={
                 raw:true,
                 include:[
                     {model:Ingredientmodel, attributes:["id", "Name"]},
-                //    {model:RecipeIngredientModel,attributes:['quantity']}
+                    {model:styleModel},
+                    {model:userModel, attributes:['userId', 'firstName', 'lastName', 'email']}
                 ],
                 where: whereclause,
                 limitClause,
@@ -255,7 +261,6 @@ module.exports={
                 raw:true,
             })
             .then((result) => {
-                console.log(result);
                 let foundRecipe = {};
                 foundRecipe.id = result.id;
                 foundRecipe.active = false;
@@ -337,12 +342,8 @@ module.exports={
             var altered = true;
             var newRi = true;
             console.log('new Ingredient');
-            console.log(newIngredient);
-            console.log(returnedRecipeIngredients);
             for( existing in returnedRecipeIngredients ){
-                console.log(newIngredient.ingredientId);
-                console.log(returnedRecipeIngredients[existing].ingredientId );
-                if(returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId){
+                 if(returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId){
                     newRi = false;
                     newIngredient.id=returnedRecipeIngredients[existing].id;
                     if(returnedRecipeIngredients[existing].quantity == newIngredient.quantity){
@@ -351,8 +352,7 @@ module.exports={
                 }
             }
             if(altered || newRi){
-                console.log(newIngredient);
-                RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient);
+               RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient);
             }
         }
         return Recipe
