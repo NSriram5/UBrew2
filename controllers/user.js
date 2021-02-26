@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const { BCRYPT_WORK_FACTOR } = require("../config/config.js");
 module.exports = {
     async createUser(user) {
-        console.log(User);
-        console.log(user);
         if (user.password) {
             user.passwordHash = await bcrypt.hash(user.password, BCRYPT_WORK_FACTOR);
             delete user.password;
@@ -17,8 +15,8 @@ module.exports = {
         return User
             .create(user)
             .then((result) => {
-                console.log(result);
-                const userResult = result.get({ plain: true });
+                //console.log(result);
+                let userResult = result.get({ plain: true });
                 delete userResult.passwordHash;
                 return userResult;
             })
@@ -59,7 +57,7 @@ module.exports = {
             })
             .then((result) => {
                 console.log('User Found');
-                console.log(result);
+                //console.log(result);
                 return result;
             })
             .catch(error => {
@@ -102,7 +100,7 @@ module.exports = {
                 const valid = await bcrypt.compare(password, user[0].passwordHash);
                 delete user[0].passwordHash;
                 if (valid === true) {
-                    console.log('User should be logged in');
+                    //console.log('User should be logged in');
                     return user[0];
                 }
             }

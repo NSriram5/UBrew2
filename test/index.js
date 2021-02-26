@@ -53,14 +53,14 @@ module.exports = {
        // recipeObj.userid = tempUser.userId;
         //recipeObj.styleId=1;
         createRecipes = async function(asyncrecipeObj, userId) {
-            console.log(asyncrecipeObj);
+            //console.log(asyncrecipeObj);
             if(Array.isArray(asyncrecipeObj)){
                 for(item in asyncrecipeObj){
                     asyncrecipeObj[item].userId = userId;
                     //item.styleId = 1;
-                    console.log(asyncrecipeObj[item]);
+                    //console.log(asyncrecipeObj[item]);
                     rs = await recipe.createRecipe(asyncrecipeObj[item]);
-                    console.log(rs);
+                    //console.log(rs);
                 }
             }else{
                 recipeCreateResult.userId = userId;
@@ -70,11 +70,12 @@ module.exports = {
         };
         await createRecipes(recipeObj, tempUser.userId);
         var recipeResult = await recipe.getRecipe();
-        var fullRecipeResult = await recipe.getFullRecipe({id:recipeResult.rows[0].id})
-        console.log('full recipe result');
+        console.log(recipeResult);
+        var fullRecipeResult = await recipe.getFullRecipe({token:recipeResult.rows[0].token})
+        //console.log('full recipe result');
         console.log(fullRecipeResult);
         fullRecipeResult.IBU=345;
-        const deleteRecipe = fullRecipeResult;
+        var deleteRecipe = fullRecipeResult;
         await recipe.updateRecipe(fullRecipeResult);
         console.log(recipeResult.rows[0].instructions);
         await recipe.deleteRecipe(deleteRecipe.token);
@@ -82,5 +83,7 @@ module.exports = {
         console.log(updatePass);
         const userdisable = await user.disableUser(tempUser.userId);
         console.log(userdisable);
+        //const  emptyFilter = await recipe.getFullRecipe({});
+        //console.log(emptyFilter);
     }
 }

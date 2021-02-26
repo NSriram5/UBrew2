@@ -5,7 +5,7 @@ module.exports={
         return Style
                 .create(style,{returning:['id','name','color']})
                 .then((result)=>{
-                    console.log(result);
+                   // console.log(result);
                     return result;
                 })
                 .catch((err)=>{
@@ -50,7 +50,7 @@ module.exports={
         return Style
                 .bulkCreate(styles)
                 .then((result)=>{
-                    console.log(result);
+                    //console.log(result);
                     console.log('successfully created styles');
                     return result;
                 })
