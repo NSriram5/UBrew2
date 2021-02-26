@@ -77,7 +77,6 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
     try {
         const response = await Recipe.getRecipe({ isAdmin: true, id: req.body.id });
         const recipe = response.rows[0];
-        debugger;
         if (res.locals.user.userId != recipe.userId && !res.locals.user.admin) {
             throw new ForbiddenError("Only an admin or the user of this account can update these details");
         }
@@ -88,7 +87,6 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
             throw new BadRequestError(errs);
         }
 
-        debugger;
         await Recipe.updateRecipe(req.body);
 
         return res.json({ validMessage: "Recipe has been updated" })
