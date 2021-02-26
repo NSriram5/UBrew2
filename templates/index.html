@@ -63,7 +63,9 @@
                 <nav>
                     <ul>
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link active">Public</a></li>
+                        {% if user.userId %}
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link">Mine</a></li>
+                        {% endif %}
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link">Rare</a></li>
                     </ul>
                 </nav>
