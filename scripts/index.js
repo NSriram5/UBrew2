@@ -15,13 +15,16 @@ const recipesRoutes = require("../routes/recipes");
 const ingredientsRoutes = require("../routes/ingredients");
 const adminRoutes = require("../routes/admin");
 const stylesRoutes = require("../routes/styles");
+
 const { getRecipe, getMyRecipes } = require("../controllers/recipe");
 const { getUser } = require("../controllers/user");
+const user = require("../controllers/user");
+const { getStyles } = require("../controllers/style");
+
 const path = require("path");
 const nunjucks = require("nunjucks");
 const bodyParser = require("body-parser");
 const { SESSION_SECRET } = require("../config/config");
-const user = require("../controllers/user");
 
 //const morgan = require("morgan");
 
@@ -103,7 +106,9 @@ app.get("/create-recipe", authenticateJWT, async function(req, res, next) {
         if (!res.locals.user.userId) {
             return res.redirect("/");
         }
-        return res.render("create-recipe.html");
+        const styles = await getStyles({});
+        debugger;
+        return res.render("create-recipe.html", styles);
     } catch (err) {
         return next(err);
     }

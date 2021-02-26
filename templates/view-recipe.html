@@ -56,52 +56,64 @@ https://templatemo.com/tm-539-simple-house
             <div class="tm-container-inner">
 
                 <div class="row">
-                    <form id="createRecipeForm" action="" method="" class="tm-contact-form">
 
-                        <div class="form-group">
-                            <input id="nameInput" type="text" name="name" class="form-control" placeholder="name" required="" />
+
+                        <div class="name-box">
+                            <h2>{{recipe.Name}}</h2>
                         </div>
 
-                        <div class="form-group">
-                            <input id="abvInput" type="number" name="abv" class="form-control" placeholder="ABV" required="" min="0"/>
+                        <div class="abv-box">
+                            <h3>{{recipe.ABV}}</h3>
                         </div>
 
-                        <div class="form-group">
-                            <input id="ogInput" type="number" name="og" class="form-control" placeholder="OG" required="" min="0"/>
+                        <div class="og-box">
+                            <h3>{{recipe.OG}}</h3>
                         </div>
 
-                        <div class="form-group">
-                            <input id="fgInput" type="number" name="lastName" class="form-control" placeholder="FG" required="" min="0" />
+                        <div class="fg-box">
+                            <h3>{{recipe.FG}}</h3>
                         </div>
 
-                        <div class="form-group">
-                            <input id="ibuInput" type="number" name="ibu" class="form-control" placeholder="IBU" required="" min="0"/>
+                        <div class="ibu-box">
+                            <h3>{{recipe.IBU}}</h3>
                         </div>
 
-                        <div class="form-group">
-                            <textarea id="instructionsInput" name="instructions" class="form-control" placeholder="Instructions"></textarea>
+                        <div class="instructions-box">
+                            <p>{{recipe.instructions}}</p>
                         </div>
 
-                        <div class="form-group">
+                        <div class="public-box">
+                        {% if recipe.public %}
                             <input id="publicInput" type="checkbox" name="public" class="form-control" checked />
+                        {% else %}
+                            <input id="publicInput" type="checkbox" name="public" class="form-control" />
+                        {% endif %}    
                             <label for="public">Make Public</label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="shareable-box">
+                        {% if recipe.shareable %}
                             <input id="shareableInput" type="checkbox" name="shareable" class="form-control" checked />
-                            <label for="shareable">Make Shareable</label>
+                        {% else %}
+                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control" />
+                        {% endif %}    
+                            <label for="public">Make Shareable</label>
                         </div>
 
-                        <div class="form-group">
+                        <div class="active-box">
+                        {% if recipe.active %}
                             <input id="activeInput" type="checkbox" name="active" class="form-control" checked/>
-                            <label for="active">Make Active</label>
+                        {% else %}
+                            <input id="activeInput" type="checkbox" name="active" class="form-control"/>
+                        {% endif %}    
+                            <label for="public">Make Active</label>
                         </div>
 
                         <div class="form-group">
                             <select id="styleInput" name="style" class="form-control" required="">
                                 <option value="blank"> </option>
                             {% for style in styles %}
-                                <option value="{{style.id}}">{{style.name}}</option>
+                                <option value="{{style.name}}">{{style.name}}</option>
                             {% endfor %}
                             </select>
                         </div>
@@ -120,7 +132,6 @@ https://templatemo.com/tm-539-simple-house
 					            Create
 					          </button>
                         </div>
-                    </form>
                 </div>
             </div>
         </main>
@@ -132,25 +143,8 @@ https://templatemo.com/tm-539-simple-house
     <script src="js/jquery.min.js"></script>
     <script src="js/parallax.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/create-recipe.js"></script>
-    <script>
-        $(document).ready(function() {
-            var acc = document.getElementsByClassName("accordion");
-            var i;
+    <script src="js/view-recipe.js"></script>
 
-            for (i = 0; i < acc.length; i++) {
-                acc[i].addEventListener("click", function() {
-                    this.classList.toggle("active");
-                    var panel = this.nextElementSibling;
-                    if (panel.style.maxHeight) {
-                        panel.style.maxHeight = null;
-                    } else {
-                        panel.style.maxHeight = panel.scrollHeight + "px";
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 
 </html>
