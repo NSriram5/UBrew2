@@ -78,6 +78,11 @@ module.exports = {
             };
         }
         if (filter == undefined) { filter = {}; }
+        if (filter.id) {
+            whereclause.id = {
+                [Op.eq]: filter.id
+            };
+        }
         if (filter.name) {
             whereclause.Name = {
                 [Op.iLike]: '%' + filter.name + '%'

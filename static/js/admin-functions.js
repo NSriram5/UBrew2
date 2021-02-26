@@ -52,7 +52,7 @@ function passwordAssignMode(e) {
 async function passwordSetMode(e) {
     const newPassword = e.target.previousSibling.value;
     const userId = e.target.dataset.id;
-    //const response = await axios.patch("/admin/password", { userId, newPassword });
+    const response = await axios.patch("/admin/password", { userId, newPassword });
     const resetButton = $(`<button class="reset-password" data-id="${userId}">`).text("reset password");
     $(e.target.parentElement).append(resetButton)
     e.target.previousSibling.remove();
@@ -71,9 +71,9 @@ async function styleChangeMode(e) {
 }
 
 async function styleAssign(e) {
-    const recipeId = e.target.dataset.id;
-    const styleId = e.target.value;
-    //const results = await axios.patch("/recipes", { id: recipeId, styleId });
+    const recipeId = parseInt(e.target.dataset.id);
+    const styleId = parseInt(e.target.value);
+    const results = await axios.patch("/recipes", { id: recipeId, styleId });
     e.target.parentElement.innerHTML = `${styleId}`;
     e.target.remove();
 

@@ -75,8 +75,9 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
  */
 router.patch("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        const recipe = await Recipe.getFullRecipe({ id: req.body.id });
-
+        const response = await Recipe.getRecipe({ isAdmin: true, id: req.body.id });
+        const recipe = response.rows[0];
+        debugger;
         if (res.locals.user.userId != recipe.userId && !res.locals.user.admin) {
             throw new ForbiddenError("Only an admin or the user of this account can update these details");
         }
