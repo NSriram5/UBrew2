@@ -14,8 +14,9 @@ const usersRoutes = require("../routes/users");
 const recipesRoutes = require("../routes/recipes");
 const ingredientsRoutes = require("../routes/ingredients");
 const adminRoutes = require("../routes/admin");
-const { getRecipe } = require("../controllers/recipe")
-const { getUser } = require("../controllers/user")
+const stylesRoutes = require("../routes/styles");
+const { getRecipe, getMyRecipes } = require("../controllers/recipe");
+const { getUser } = require("../controllers/user");
 const path = require("path");
 const nunjucks = require("nunjucks");
 const bodyParser = require("body-parser");
@@ -39,20 +40,21 @@ nunjucks.configure(path.resolve(__dirname + "/../templates"), { autoescape: true
 
 app.get("/", authenticateJWT, async function(req, res, next) {
     try {
-        let publicRecipes = [];
-        let myRecipes = [];
+        const publicRecipesPromise = getRecipe({});
+        let publicRecipes;
+        let myRecipes;
         let user = {}
         if (res.locals.user) {
             console.log(`Logged in as ${res.locals.user}`)
-            myRecipes = getRecipe({ userId: res.locals.user.userId });
-
-            publicRecipes = getRecipe({ shareable: true });
-
+            const myRecipesPromise = getMyRecipes(res.locals.user.userId);
             user = res.locals.user;
-            await publicRecipes && await myRecipes;
+            [publicRecipes, myRecipes] = await Promise.all([publicRecipesPromise, myRecipesPromise]);
+            if (!myRecipes) myRecipes = [];
+        } else {
+            publicRecipes = await publicRecipesPromise;
+            myRecipes = [];
         }
-        publicRecipes = await getRecipe({ shareable: true });
-        return res.render("index.html", { publicRecipes, myRecipes, user });
+        return res.render("index.html", { publicRecipes: publicRecipes.rows, myRecipes: myRecipes.rows, user });
     } catch (err) {
         return next(err);
     }
@@ -112,9 +114,11 @@ app.use("/users", usersRoutes);
 app.use("/recipes", recipesRoutes);
 app.use("/ingredients", ingredientsRoutes);
 app.use("/admin", adminRoutes);
+app.use("/styles", stylesRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
+    debugger;
     return next(new NotFoundError());
 });
 

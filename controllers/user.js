@@ -27,6 +27,7 @@ module.exports = {
     getUser(filter, authenticate = false) {
         let whereclause
         whereclause = {};
+        if (filter == undefined) { filter = {}; }
         if (filter.email) {
             whereclause.email = {
                 [Op.eq]: filter.email
