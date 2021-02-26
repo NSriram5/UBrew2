@@ -34,7 +34,7 @@ router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
  */
 router.get("/:token", async function(req, res, next) {
     try {
-        const recipe = await Recipe.get(req.params.id);
+        const recipe = await Recipe.getFullRecipe(req.params.token);
 
         //TODO need to write authorization logic
 
@@ -103,7 +103,7 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
  **/
 router.delete(":/id", ensureLoggedIn, async function(req, res, next) {
     try {
-        const recipe = await Recipe.get(req.params.id);
+        const recipe = await Recipe.getRecipe(req.params.id);
         if (res.locals.user.isAdmin == false && res.locals.user.username != recipe.user) {
             throw new ForbiddenError("Only an admin or the user of this account can delete this recipe");
         }

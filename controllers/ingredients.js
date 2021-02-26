@@ -11,14 +11,14 @@ module.exports={
                 attributes:['id','Name']
             })
             .then((result)=>{
-                console.log(result);
+                //console.log(result);
                 if(result === null){
                     console.log('couldnt find an ingredient, creating');
                     result = Ingredient.create(ingredient,{returning:['id','Name']});
                 }
                 else{
                     console.log('ingredient found');
-                    console.log(result);
+                    //console.log(result);
                 }
                 return result;
             })
@@ -40,7 +40,8 @@ module.exports={
             })
             .then((result)=>{
                 console.log('Ingredient Found');
-                console.log(result);
+                //console.log(result);
+                return ingredient;
             })
             .catch(error=>{
                 console.log(error, 'There was an error in the create');
@@ -49,7 +50,7 @@ module.exports={
 
     getAllIngredients(){
         return Ingredient.findAll()
-        .then((result)=>console.log(result))
+        .then((result)=>{/*console.log(result); */ return result;})
         .catch(error=>{
             console.log(error,'There was an error retrieving Ingredients');
         });

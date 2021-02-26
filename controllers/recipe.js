@@ -74,6 +74,7 @@ module.exports={
         whereclause = {};
         let offsetClause = {};
         let limitClause = {};
+        if(filter === undefined){filter = {};}
         if (!filter.isAdmin && !filter.isUser) {
             whereclause.public = {
                 [Op.eq]: true
@@ -152,13 +153,23 @@ module.exports={
     getFullRecipe(filter) {
         let whereclause;
         whereclause = {};
-        let offsetClause = {};
-        let limitClause = {};
-        whereclause.public = {
-            [Op.eq]: true
-        };
+        let offsetClause={};
+        let limitClause={};
+       
         //console.log(filter);
-        if (filter == undefined) { filter = {}; }
+        if(filter === undefined){
+            console.log('Error: no token supplied', filter);
+            return {error: true, message:'No Token supplied. Token required to retrieve full recipe'};
+        }
+        if (!filter.token) {
+            console.log('Error: no token supplied', filter);
+            return {error: true, message:'No Token supplied. Token required to retrieve full recipe'};
+        }
+        if(!filter.isAdmin && !filter.isUser){
+            whereclause.public = {
+                [Op.eq]:true
+            };
+        }
         if (filter.name) {
             whereclause.Name = {
                 [Op.iLike]: '%' + filter.name + '%'
@@ -227,14 +238,14 @@ module.exports={
             })
             .then((result) => {
                 //console.log(result);
-                var tempRes = result[0];
+                let tempRes = result[0];
                 //console.log(tempRes.Ingredients);
                 IngrdeientArray = [];
                 //tempRes.Ingredients = [];
                 for (index in result) {
                     //console.log(result);
-                    var item = result[index];
-                    var ing = item.Ingredients;
+                    let item =result[index];
+                    let ing =item.Ingredients;
                     //console.log('this is item?');
                     //console.log(item);
                     //console.log(item.Ingredients.recipeIngredients);
@@ -253,7 +264,11 @@ module.exports={
             });
     },
     deleteRecipe(token) {
-        let whereclause = {};
+        let whereclause ={};
+        if(token==undefined){ 
+            console.log('Error: no token supplied', token);
+            return {error: true, message:'No Token supplied. Token required to retrieve full token'};
+        }
         whereclause.token = {
             [Op.eq]: token
         };
@@ -268,12 +283,14 @@ module.exports={
                 foundRecipe.id = result.id;
                 foundRecipe.active = false;
                 Recipe.update(
-                        foundRecipe, {
-                            where: { id: foundRecipe.id },
-                            returning: true,
-                            raw: true
-                        })
-                    .then((result) => { console.log(result); });
+                    foundRecipe,
+                    {
+                        where: {id:foundRecipe.id},
+                        returning: true,
+                        raw:true
+                    })
+                .then((result)=>{/*console.log(result);*/ return result;})
+                .catch((updateerror)=>{console.log('delete failed', updateerror);});
             })
             .catch((error) => {
                 console.log(error);
@@ -298,10 +315,13 @@ module.exports={
                 return error;
             })
     },
-    async updateRecipe(recipe) {
+
+    async updateRecipe(recipe){
+        if(recipe.token == undefined){return {error: 'You must submit a token'};}
         var res = await Recipe.findOne({
-            where: { id: recipe.id },
-            raw: true
+            where:{token:recipe.token},
+            raw:true
+
         });
         //console.log(res);
         if (!res) {
@@ -346,7 +366,6 @@ module.exports={
             newIngredient = recipeIngredientList[temp];
             var altered = true;
             var newRi = true;
-            console.log('new Ingredient');
             for( existing in returnedRecipeIngredients ){
                  if(returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId){
                     newRi = false;
@@ -367,9 +386,9 @@ module.exports={
                     returning: true,
                     raw: true
                 })
-            .then((result) => {
-                console.log(result);
-
+            .then((result)=>{
+                /*console.log(result);*/
+               
                 //console.log('Recipe updated');
                 //console.log(recipeIngredientList);
                 /*RecipeIngredient

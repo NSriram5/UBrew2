@@ -5,7 +5,7 @@ module.exports={
         return RecipeIngredient
                 .bulkCreate(recipeIngredientList)
                 .then((result)=>{
-                    console.log(result);
+                   // console.log(result);
                     console.log('successfully created ingredients');
                     return result;
                 })
