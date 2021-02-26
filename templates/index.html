@@ -53,7 +53,10 @@
 
         <main>
             <header class="row tm-welcome-section">
+                {% if user.admin %}
+                <a href="/admin">Admin Dashboard</a> {% else %}
                 <p class="col-12 text-center">UBrew2 was started by five graduate school students who love craft beer. As part of a class project, the UBrew2 crew decided to launch a community for those who share their interest in craft beer and their recipes.</p>
+                {% endif %}
             </header>
 
             <div class="tm-paging-links">
@@ -68,7 +71,7 @@
 
             <!-- Gallery -->
             <div class="row tm-gallery">
-                <!-- gallery page NEW -->
+                <!-- gallery page Public Recipes -->
 
 
                 <div id="tm-gallery-page-public" class="tm-gallery-page">
@@ -78,7 +81,7 @@
                             <figure>
                                 <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
                                 <figcaption>
-                                    <h4 class="tm-gallery-title">Name:{{recipe.name}}</h4>
+                                    <h4 class="tm-gallery-title">Name:{{recipe.Name}}</h4>
                                     <p class="tm-gallery-description">IBU:{{recipe.IBU}}</p>
                                     <p class="tm-gallery-description">ABV:{{recipe.ABV}}</p>
                                 </figcaption>
@@ -87,9 +90,9 @@
                     </article>
                     {% endfor %}
                 </div>
-                <!-- gallery page NEW -->
+                <!-- gallery page Public Recipes -->
 
-                <!-- gallery page FAVORITES -->
+                <!-- gallery page My Recipes -->
                 <div id="tm-gallery-page-mine" class="tm-gallery-page hidden">
                     {% for recipe in myRecipes %}
                     <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
@@ -106,7 +109,7 @@
                     </article>
                     {% endfor %}
                 </div>
-                <!-- gallery page FAVORITES -->
+                <!-- gallery page My Recipes -->
 
                 <!-- gallery page RARE -->
                 <div id="tm-gallery-page-rare" class="tm-gallery-page hidden">

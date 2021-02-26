@@ -51,9 +51,10 @@ function ensureAdmin(req, res, next) {
         if (res.locals.user == false) {
             throw new UnauthorizedError();
         }
-        if (res.locals.user.isAdmin == false) {
+        if (res.locals.user.admin == false) {
             throw new ForbiddenError();
         }
+        return next();
     } catch (err) {
         return next(err);
     }
