@@ -6,6 +6,7 @@ const jsonschema = require("jsonschema");
 
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 const Recipe = require("../controllers/recipe");
+const { getStyle } = require("../controllers/style");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const recipeNew = require("../schemas/recipeNew.json");
 const recipeUpdateSchema = require("../schemas/recipeUpdate.json");
@@ -34,11 +35,20 @@ router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
  */
 router.get("/:token", async function(req, res, next) {
     try {
-        const recipe = await Recipe.getFullRecipe(req.params.token);
-
-        //TODO need to write authorization logic
-
-        return res.render("recipe_view.html", { recipe });
+        const recipe = await Recipe.getFullRecipe({ token: req.params.token });
+        let canUpdate
+        if (!res.locals.user || (res.locals.user.userId != recipe.userId && !res.locals.user.admin)) {
+            if (!recipe.public) {
+                throw new ForbiddenError("Only an admin or the user of this account can view these details");
+            }
+            canUpdate = false;
+        } else {
+            canUpdate = true;
+        }
+        const [style] = await getStyle({ id: recipe.styleId });
+        recipe["styleName"] = style.name;
+        let user = res.locals.user ? res.locals.user : false;
+        return res.render("view-recipe.html", { recipe, user, canUpdate });
     } catch (err) {
         return next(err);
     }

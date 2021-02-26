@@ -8,9 +8,9 @@
     <title>UBrew2 - Register</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" type="image/ico" href="img/UBrew2-Favicon.ico" />
-    <link href="css/all.min.css" rel="stylesheet" />
-    <link href="css/templatemo-style.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/ico" href="../img/UBrew2-Favicon.ico" />
+    <link href="../css/all.min.css" rel="stylesheet" />
+    <link href="../css/templatemo-style.css" rel="stylesheet" />
 
 </head>
 <!--
@@ -27,7 +27,7 @@ https://templatemo.com/tm-539-simple-house
         <!-- Top box -->
         <!-- Logo & Site Name -->
         <div class="placeholder-2">
-            <div class="parallax-window-2" data-parallax="scroll" data-image-src="img/login_header.jpg">
+            <div class="parallax-window-2" data-parallax="scroll" data-image-src="../img/login_header.jpg">
                 <div class="tm-header">
                     <div class="row tm-header-inner">
                         <div class="col-md-6 col-12">
@@ -40,7 +40,11 @@ https://templatemo.com/tm-539-simple-house
                             <ul class="tm-nav-ul">
                                 <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
                                 <li class="tm-nav-li"><a href="/about" class="tm-nav-link">About</a></li>
+                                {% if user %}
+                                <li class="tm-nav-li"><a href="/logout" class="tm-nav-link">Logout</a></li>
+                                {% else %}
                                 <li class="tm-nav-li"><a href="/login" class="tm-nav-link">Login</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -50,75 +54,83 @@ https://templatemo.com/tm-539-simple-house
 
         <main>
             <header class="row tm-welcome-section">
-                <h2 class="col-12 text-center tm-section-title">Create new recipe
+                <h2 class="col-12 text-center tm-section-title">View recipe
                 </h2>
             </header>
             <div class="tm-container-inner">
 
-                <div class="row">
+                <div class="tm-d-flex">
 
 
                         <div class="name-box">
                             <h2>{{recipe.Name}}</h2>
                         </div>
 
-                        <div class="abv-box">
-                            <h3>{{recipe.ABV}}</h3>
+                        <div class="style-box" data-styleId="{{recipe.styleId}}">
+                            Style:
+                            {{recipe.styleName}}
                         </div>
 
-                        <div class="og-box">
-                            <h3>{{recipe.OG}}</h3>
-                        </div>
-
-                        <div class="fg-box">
-                            <h3>{{recipe.FG}}</h3>
-                        </div>
-
-                        <div class="ibu-box">
-                            <h3>{{recipe.IBU}}</h3>
-                        </div>
-
-                        <div class="instructions-box">
-                            <p>{{recipe.instructions}}</p>
-                        </div>
-
-                        <div class="public-box">
-                        {% if recipe.public %}
-                            <input id="publicInput" type="checkbox" name="public" class="form-control" checked />
-                        {% else %}
-                            <input id="publicInput" type="checkbox" name="public" class="form-control" />
-                        {% endif %}    
-                            <label for="public">Make Public</label>
-                        </div>
-
-                        <div class="shareable-box">
-                        {% if recipe.shareable %}
-                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control" checked />
-                        {% else %}
-                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control" />
-                        {% endif %}    
-                            <label for="public">Make Shareable</label>
-                        </div>
-
-                        <div class="active-box">
-                        {% if recipe.active %}
-                            <input id="activeInput" type="checkbox" name="active" class="form-control" checked/>
-                        {% else %}
-                            <input id="activeInput" type="checkbox" name="active" class="form-control"/>
-                        {% endif %}    
-                            <label for="public">Make Active</label>
-                        </div>
-
-                        <div class="form-group">
+                        <div class="form-group" style="visibility:hidden;">
                             <select id="styleInput" name="style" class="form-control" required="">
-                                <option value="blank"> </option>
+                                <option value="{{recipe.styleId}}">{{recipe.styleName}}</option>
                             {% for style in styles %}
                                 <option value="{{style.name}}">{{style.name}}</option>
                             {% endfor %}
                             </select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="abv-box">
+                            <h3>ABV:{{recipe.ABV}}</h3>
+                        </div>
+
+                        <div class="og-box">
+                            <h3>OG:{{recipe.OG}}</h3>
+                        </div>
+
+                        <div class="fg-box">
+                            <h3>FG:{{recipe.FG}}</h3>
+                        </div>
+
+                        <div class="ibu-box">
+                            <h3>IBU:{{recipe.IBU}}</h3>
+                        </div>
+
+                        <div class="instructions-box">
+                            <p>Instructions:</p>
+                            <p>{{recipe.instructions}}</p>
+                        </div>
+
+                        <div class="public-box">
+                        {% if recipe.public %}
+                            <input id="publicInput" type="checkbox" name="public" class="form-control" checked disabled/>
+                        {% else %}
+                            <input id="publicInput" type="checkbox" name="public" class="form-control disabled" />
+                        {% endif %}    
+                            <label for="public">Make Public</label>
+                        </div>
+
+                        <div class="shareable-box">
+                        {% if recipe.shareable %}
+                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control" checked disabled />
+                        {% else %}
+                            <input id="shareableInput" type="checkbox" name="shareable" class="form-control disabled" />
+                        {% endif %}    
+                            <label for="public">Make Shareable</label>
+                        </div>
+
+                        <div class="active-box">
+                        {% if recipe.active %}
+                            <input id="activeInput" type="checkbox" name="active" class="form-control" checked disabled/>
+                        {% else %}
+                            <input id="activeInput" type="checkbox" name="active" class="form-control disabled"/>
+                        {% endif %}    
+                            <label for="public">Make Active</label>
+                        </div>
+
+                        
+
+                        <div class="form-group" style="visibility:hidden;">
                             <input id="ingredientInput" type="text" name="ingredient" class="form-control" placeholder="Ingredient" required="" />
                             <input id="ingredientqtyInput" type="number" name="ingredientqty" class="form-control" placeholder="Quantity" required="" />
                             <button id="addingredientBtn">add ingredient</button>
@@ -127,10 +139,16 @@ https://templatemo.com/tm-539-simple-house
 
                         </ul>
 
-                        <div class="form-group tm-d-flex">
-                            <button id="createBtn" class="tm-btn tm-btn-success tm-btn-right">
-					            Create
+                        <div class="tm-d-flex">
+                        {% if canUpdate %}
+                            <button id="updateBtn" class="tm-btn tm-btn-success tm-btn-right">
+					            Update
 					          </button>
+                        {% else %}
+                            <button id="updateBtn" class="tm-btn tm-btn-success tm-btn-right" disabled>
+					            Update
+					          </button>
+                        {% endif %}
                         </div>
                 </div>
             </div>
@@ -140,10 +158,10 @@ https://templatemo.com/tm-539-simple-house
             <p>Copyright &copy; 2021 UBrew2 LLC</p>
         </footer>
     </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/parallax.min.js"></script>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/parallax.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/view-recipe.js"></script>
+    <script src="../js/view-recipe.js"></script>
 
 </body>
 

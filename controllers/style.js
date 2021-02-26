@@ -21,9 +21,15 @@ module.exports = {
                 [Op.iLike]: '%' + filter.name + '%'
             };
         }
+        if (filter.id) {
+            whereclause.id = {
+                [Op.eq]: filter.id
+            };
+        }
 
         return Style
             .findAll({
+                raw: true,
                 where: whereclause,
                 attributes: ["id", "name", "color"],
             })

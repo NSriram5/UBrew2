@@ -19,7 +19,7 @@ const stylesRoutes = require("../routes/styles");
 const { getRecipe, getMyRecipes } = require("../controllers/recipe");
 const { getUser } = require("../controllers/user");
 const user = require("../controllers/user");
-const { getStyles } = require("../controllers/style");
+const { getAllStyles } = require("../controllers/style");
 
 const path = require("path");
 const nunjucks = require("nunjucks");
@@ -106,9 +106,9 @@ app.get("/create-recipe", authenticateJWT, async function(req, res, next) {
         if (!res.locals.user.userId) {
             return res.redirect("/");
         }
-        const styles = await getStyles({});
+        const styles = await getAllStyles({});
         debugger;
-        return res.render("create-recipe.html", styles);
+        return res.render("create-recipe.html", { styles });
     } catch (err) {
         return next(err);
     }
