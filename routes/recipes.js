@@ -98,8 +98,7 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
             throw new BadRequestError(errs);
         }
         req.body["id"] = recipe.id
-        await Recipe.updateRecipe(req.body);
-
+        const updated = await Recipe.updateRecipe(req.body);
         return res.json({ validMessage: "Recipe has been updated" })
     } catch (err) {
         return next(err);

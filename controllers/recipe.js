@@ -328,7 +328,6 @@ module.exports = {
             console.log('recipe doesn\'t exist');
             return { error: true, message: 'The recipe doesn\'t exist. please create it first.' };
         }
-        debugger;
         let returnRecipeIngredients = RecipeIngredient.getRecipeIngredients({ recipeId: recipe.id });
         let recipeIngredientList = [];
         for (element in recipe.Ingredients) {
