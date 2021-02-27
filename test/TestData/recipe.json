@@ -6,7 +6,7 @@
         "IBU": 77,
         "public": false,
         "shareable": false,
-        "style": "IPA",
+        "styleId":1,
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
@@ -32,7 +32,7 @@
         "IBU": 77,
         "public": true,
         "shareable": true,
-        "style": "IPA",
+        "styleId": 2,
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
@@ -58,7 +58,7 @@
         "IBU": 77,
         "public": true,
         "shareable": true,
-        "style": "IPA",
+        "styleId": 3,
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{

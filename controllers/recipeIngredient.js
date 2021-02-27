@@ -5,7 +5,7 @@ module.exports={
         return RecipeIngredient
                 .bulkCreate(recipeIngredientList)
                 .then((result)=>{
-                    console.log(result);
+                   // console.log(result);
                     console.log('successfully created ingredients');
                     return result;
                 })
@@ -22,10 +22,10 @@ module.exports={
         }
         let whereclause={};
         if(filter.recipeId){
-            where.recipeId=filter.recipeId;
+            whereclause.recipeId=filter.recipeId;
         }
         else if(filter.ingredientId){
-            where.ingredientId = filter.ingredientId
+            whereclause.ingredientId = filter.ingredientId
         }
         else{
             return {error: 'you must submit filter criteria'};
@@ -44,6 +44,7 @@ module.exports={
     },
     updateOrCreateRecipeIngredient(recipeIngredient){
        
+        console.log(recipeIngredient);
         return RecipeIngredient
                 .upsert(
                     recipeIngredient)
@@ -54,7 +55,7 @@ module.exports={
                 })
                 .catch((err)=>{
                     console.log(err);
-                    console.log('THere was an error in the bulk creation of recipe ingredients');
+                    console.log('THere was an error in the  creation of recipe ingredients');
                     return err;
                 });
     },
