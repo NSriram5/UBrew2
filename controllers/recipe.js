@@ -3,15 +3,15 @@ const Recipe = require('../models').Recipe;
 const Ingredient = require('./ingredients');
 const Op = require('../models/').Sequelize.Op;
 const RecipeIngredient = require('./recipeIngredient');
-const RecipeIngredientModel=require('../models').recipeIngredients;
-const Ingredientmodel= require('../models').Ingredient;
-const styleModel= require('../models').Style;
+const RecipeIngredientModel = require('../models').recipeIngredients;
+const Ingredientmodel = require('../models').Ingredient;
+const styleModel = require('../models').Style;
 const userModel = require('../models').User;
-module.exports={
-    async createRecipe(recipe){
-        let recipeIngredientList=[];
-        for(element in  recipe.Ingredients){
-            let indingredient={};
+module.exports = {
+    async createRecipe(recipe) {
+        let recipeIngredientList = [];
+        for (element in recipe.Ingredients) {
+            let indingredient = {};
             indingredient.Name = recipe.Ingredients[element].Name;
             await Ingredient
                 .createIngredient(indingredient)
@@ -74,7 +74,7 @@ module.exports={
         whereclause = {};
         let offsetClause = {};
         let limitClause = {};
-        if(filter === undefined){filter = {};}
+        if (filter === undefined) { filter = {}; }
         if (!filter.isAdmin && !filter.isUser) {
             whereclause.public = {
                 [Op.eq]: true
@@ -134,12 +134,13 @@ module.exports={
                 where: whereclause,
                 limitClause,
                 offsetClause,
-                include:[
-                    {model:styleModel },
+                include: [
+                    { model: styleModel },
                 ],
-                raw:true,
-                attributes:['id','Name', 'ABV', 'OG', 'FG','IBU', 'token', 
-                'styleId', 'public', 'shareable', 'instructions','userId'],
+                raw: true,
+                attributes: ['id', 'Name', 'ABV', 'OG', 'FG', 'IBU', 'token',
+                    'styleId', 'public', 'shareable', 'instructions', 'userId'
+                ],
             })
             .then((result) => {
                 console.log('Recipe Found');
@@ -153,21 +154,20 @@ module.exports={
     getFullRecipe(filter) {
         let whereclause;
         whereclause = {};
-        let offsetClause={};
-        let limitClause={};
-       
+        let offsetClause = {};
+        let limitClause = {};
         //console.log(filter);
-        if(filter === undefined){
+        if (filter === undefined) {
             console.log('Error: no token supplied', filter);
-            return {error: true, message:'No Token supplied. Token required to retrieve full recipe'};
+            return { error: true, message: 'No Token supplied. Token required to retrieve full recipe' };
         }
         if (!filter.token) {
             console.log('Error: no token supplied', filter);
-            return {error: true, message:'No Token supplied. Token required to retrieve full recipe'};
+            return { error: true, message: 'No Token supplied. Token required to retrieve full recipe' };
         }
-        if(!filter.isAdmin && !filter.isUser){
+        if (!filter.isAdmin && !filter.isUser) {
             whereclause.public = {
-                [Op.eq]:true
+                [Op.eq]: true
             };
         }
         if (filter.name) {
@@ -218,12 +218,12 @@ module.exports={
         } else { limitClause.limit = 21; }
         //console.log(whereclause);
         return Recipe
-            .findAll({      
-                raw:true,
-                include:[
-                    {model:Ingredientmodel, attributes:["id", "Name"]},
-                    {model:styleModel},
-                    {model:userModel, attributes:['userId', 'firstName', 'lastName', 'email']}
+            .findAll({
+                raw: true,
+                include: [
+                    { model: Ingredientmodel, attributes: ["id", "Name"] },
+                    { model: styleModel },
+                    { model: userModel, attributes: ['userId', 'firstName', 'lastName', 'email'] }
                 ],
                 where: whereclause,
                 limitClause,
@@ -244,8 +244,8 @@ module.exports={
                 //tempRes.Ingredients = [];
                 for (index in result) {
                     //console.log(result);
-                    let item =result[index];
-                    let ing =item.Ingredients;
+                    let item = result[index];
+                    let ing = item.Ingredients;
                     //console.log('this is item?');
                     //console.log(item);
                     //console.log(item.Ingredients.recipeIngredients);
@@ -264,10 +264,10 @@ module.exports={
             });
     },
     deleteRecipe(token) {
-        let whereclause ={};
-        if(token==undefined){ 
+        let whereclause = {};
+        if (token == undefined) {
             console.log('Error: no token supplied', token);
-            return {error: true, message:'No Token supplied. Token required to retrieve full token'};
+            return { error: true, message: 'No Token supplied. Token required to retrieve full token' };
         }
         whereclause.token = {
             [Op.eq]: token
@@ -283,14 +283,13 @@ module.exports={
                 foundRecipe.id = result.id;
                 foundRecipe.active = false;
                 Recipe.update(
-                    foundRecipe,
-                    {
-                        where: {id:foundRecipe.id},
-                        returning: true,
-                        raw:true
-                    })
-                .then((result)=>{/*console.log(result);*/ return result;})
-                .catch((updateerror)=>{console.log('delete failed', updateerror);});
+                        foundRecipe, {
+                            where: { id: foundRecipe.id },
+                            returning: true,
+                            raw: true
+                        })
+                    .then((result) => { /*console.log(result);*/ return result; })
+                    .catch((updateerror) => { console.log('delete failed', updateerror); });
             })
             .catch((error) => {
                 console.log(error);
@@ -316,11 +315,11 @@ module.exports={
             })
     },
 
-    async updateRecipe(recipe){
-        if(recipe.token == undefined){return {error: 'You must submit a token'};}
+    async updateRecipe(recipe) {
+        if (recipe.token == undefined) { return { error: 'You must submit a token' }; }
         var res = await Recipe.findOne({
-            where:{token:recipe.token},
-            raw:true
+            where: { token: recipe.token },
+            raw: true
 
         });
         //console.log(res);
@@ -347,7 +346,6 @@ module.exports={
                     console.log('Error creating Ingredient');
                 })
         };
-
         let newRecipe = {};
         newRecipe.Name = recipe.Name;
         newRecipe.ABV = recipe.ABV;
@@ -366,8 +364,8 @@ module.exports={
             newIngredient = recipeIngredientList[temp];
             var altered = true;
             var newRi = true;
-            for( existing in returnedRecipeIngredients ){
-                 if(returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId){
+            for (existing in returnedRecipeIngredients) {
+                if (returnedRecipeIngredients[existing].ingredientId == newIngredient.ingredientId) {
                     newRi = false;
                     newIngredient.id = returnedRecipeIngredients[existing].id;
                     if (returnedRecipeIngredients[existing].quantity == newIngredient.quantity) {
@@ -375,8 +373,8 @@ module.exports={
                     }
                 }
             }
-            if(altered || newRi){
-               RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient);
+            if (altered || newRi) {
+                RecipeIngredient.updateOrCreateRecipeIngredient(newIngredient);
             }
         }
         return Recipe
@@ -386,9 +384,9 @@ module.exports={
                     returning: true,
                     raw: true
                 })
-            .then((result)=>{
+            .then((result) => {
                 /*console.log(result);*/
-               
+
                 //console.log('Recipe updated');
                 //console.log(recipeIngredientList);
                 /*RecipeIngredient

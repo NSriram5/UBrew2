@@ -62,8 +62,9 @@ async function passwordSetMode(e) {
 
 async function styleChangeMode(e) {
     const recipeId = e.target.dataset.id;
+    const recipeToken = e.target.dataset.token;
     const results = await axios.get("/styles");
-    const styleSelector = $(`<select name="stylesselection" id="stylesselection" data-id="${recipeId}">`);
+    const styleSelector = $(`<select name="stylesselection" id="stylesselection" data-id="${recipeId}" data-token="${recipeToken}">`);
     results.data.map((style) => { styleSelector.append($(`<option value="${style.id}" class="style-select">`).text(`${style.name}`)) });
     styleSelector.change(styleAssign);
     e.target.innerHTML = "";
@@ -72,8 +73,9 @@ async function styleChangeMode(e) {
 
 async function styleAssign(e) {
     const recipeId = parseInt(e.target.dataset.id);
+    const recipeToken = e.target.dataset.token;
     const styleId = parseInt(e.target.value);
-    const results = await axios.patch("/recipes", { id: recipeId, styleId });
+    const results = await axios.patch("/recipes", { token: recipeToken, id: recipeId, styleId });
     e.target.parentElement.innerHTML = `${styleId}`;
     e.target.remove();
 

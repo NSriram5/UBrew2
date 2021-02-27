@@ -34,5 +34,13 @@
         "pg-hstore": "^2.3.3",
         "sequelize": "^6.5.0",
         "sequelize-cli": "^6.2.0"
-    }
+    },
+    "nodemonConfig":{
+    	"ignore":[
+    		".git",
+    		"node_modules/**/node_modules"
+		],
+	"ext": "js,json,html,htm,css"
+	}
 }
+

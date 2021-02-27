@@ -63,7 +63,9 @@
                 <nav>
                     <ul>
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link active">Public</a></li>
+                        {% if user.userId %}
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link">Mine</a></li>
+                        {% endif %}
                         <li class="tm-paging-item"><a href="#" class="tm-paging-link">Rare</a></li>
                     </ul>
                 </nav>
@@ -77,7 +79,7 @@
                 <div id="tm-gallery-page-public" class="tm-gallery-page">
                     {% for recipe in publicRecipes %}
                     <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <a href="/recipes/{{recipe.id}}">
+                        <a href="/recipes/{{recipe.token}}">
                             <figure>
                                 <img src="../img/gallery/beers_01.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
                                 <figcaption>

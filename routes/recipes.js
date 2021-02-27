@@ -6,6 +6,7 @@ const jsonschema = require("jsonschema");
 
 const { ensureLoggedIn, ensureAdmin } = require("../middleware/auth");
 const Recipe = require("../controllers/recipe");
+const { getStyle } = require("../controllers/style");
 const { BadRequestError, UnauthorizedError, ForbiddenError } = require("../expressError");
 const recipeNew = require("../schemas/recipeNew.json");
 const recipeUpdateSchema = require("../schemas/recipeUpdate.json");
@@ -34,11 +35,22 @@ router.get("/", ensureLoggedIn, ensureAdmin, async function(req, res, next) {
  */
 router.get("/:token", async function(req, res, next) {
     try {
-        const recipe = await Recipe.getFullRecipe(req.params.token);
+        const recipe = await Recipe.getFullRecipe({ token: req.params.token });
+        let canUpdate
+        if (!res.locals.user || (res.locals.user.userId != recipe.userId && !res.locals.user.admin)) {
+            if (!recipe.public) {
+                throw new ForbiddenError("Only an admin or the user of this account can view these details");
+            }
+            canUpdate = false;
+        } else {
+            canUpdate = true;
+        }
 
-        //TODO need to write authorization logic
-
-        return res.render("recipe_view.html", { recipe });
+        const styles = await getStyle({});
+        const style = styles.filter(style => style.id == recipe.styleId)[0];
+        recipe["styleName"] = style.name;
+        let user = res.locals.user ? res.locals.user : false;
+        return res.render("view-recipe.html", { recipe, user, canUpdate, styles });
     } catch (err) {
         return next(err);
     }
@@ -75,8 +87,9 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
  */
 router.patch("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        const response = await Recipe.getRecipe({ isAdmin: true, id: req.body.id });
-        const recipe = response.rows[0];
+
+        const recipe = await Recipe.getFullRecipe({ token: req.body.token, isAdmin: true });
+
         if (res.locals.user.userId != recipe.userId && !res.locals.user.admin) {
             throw new ForbiddenError("Only an admin or the user of this account can update these details");
         }
@@ -86,9 +99,8 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-
-        await Recipe.updateRecipe(req.body);
-
+        req.body["id"] = recipe.id
+        const updated = await Recipe.updateRecipe(req.body);
         return res.json({ validMessage: "Recipe has been updated" })
     } catch (err) {
         return next(err);

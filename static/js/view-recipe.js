@@ -1,6 +1,18 @@
-async function addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients) {
+function clickUpdate(e) {
+    e.preventDefault();
+    $(".formElements").show();
+    $(".displayElements").hide();
+    $(".controlBox>input").attr("disabled", false);
+    $("#updateBtn").hide();
+    $("#saveBtn").hide();
+    $("#saveBtn").show();
+
+}
+
+
+async function updateRecipe(retrievedToken, typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients) {
     try {
-        const response = await axios.post('/recipes', { Name: typedName, ABV: typedABV, OG: typedOG, FG: typedFG, IBU: typedIBU, instructions: typedInstructions, public: selectedPublic, shareable: selectedShareable, active: selectedActive, styleId: selectedstyle, Ingredients: addedIngredients });
+        const response = await axios.patch('/recipes', { token: retrievedToken, Name: typedName, ABV: typedABV, OG: typedOG, FG: typedFG, IBU: typedIBU, instructions: typedInstructions, public: selectedPublic, shareable: selectedShareable, active: selectedActive, styleId: selectedstyle, Ingredients: addedIngredients });
         if (response.data.invalidMessage) {
             applyErrors(response.data.invalidMessage)
             return;
@@ -10,13 +22,9 @@ async function addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedI
             window.location.href = "/"
             return
         }
-
     } catch (err) {
         console.log(err)
     }
-
-
-
 }
 
 function addIngredient(e) {
@@ -27,7 +35,7 @@ function addIngredient(e) {
     const key = previousIngredients.length === 0 ? 0 : previousIngredients[previousIngredients.length - 1]["key"];
     newIngredient = { key: key + 1, Name: newIngredient, quantity: newQty }
     sessionStorage.setItem("ingredients", JSON.stringify([...previousIngredients, newIngredient]));
-    const paragraphItem = $("<p>").text(`${newQty} of ${newIngredient["Name"]}`)
+    const paragraphItem = $("<p>").text(`${newQty} - of - ${newIngredient["Name"]}`)
     const delBtn = $("<button>").text("x").addClass("del-ingredient").data("key", key + 1)
     const liItem = $("<li>").append(paragraphItem).append(delBtn);
     $("#saved-ingredients").append(liItem);
@@ -44,8 +52,21 @@ function clickIngredient(e) {
     }
 }
 
-function clickaddRecipe(event) {
+function clickCopytoClipboard(e) {
+    e.preventDefault();
+    let url = window.location.href;
+    let element = document.createElement('input');
+    document.body.appendChild(element);
+    element.value = url;
+    element.select();
+    document.execCommand('copy');
+    document.body.removeChild(element);
+    alert('Link copied');
+}
+
+function clicksaveRecipe(event) {
     event.preventDefault();
+    let retrievedToken = $(".name-box").data().token;
     let typedName = $("#nameInput").val();
     let typedABV = parseFloat($("#abvInput").val());
     let typedOG = parseFloat($("#ogInput").val());
@@ -55,9 +76,9 @@ function clickaddRecipe(event) {
     let selectedPublic = $("#publicInput").is(':checked');
     let selectedShareable = $("#shareableInput").is(':checked')
     let selectedActive = $("#activeInput").is(':checked')
-    let selectedstyle = $("#styleInput").val();
+    let selectedstyle = parseInt($("#styleInput").val());
     let addedIngredients = JSON.parse(sessionStorage.getItem("ingredients"));
-    addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients);
+    updateRecipe(retrievedToken, typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients);
 
 
 }
@@ -73,7 +94,9 @@ function clearSessionStorage() {
 
 $(function() {
     clearSessionStorage();
+    $("#updateBtn").click(clickUpdate);
     $("#addingredientBtn").click(addIngredient);
     $("#saved-ingredients").click(clickIngredient);
-    $("#createBtn").click(clickaddRecipe);
+    $("#saveBtn").click(clicksaveRecipe);
+    $("#copyBtn").click(clickCopytoClipboard);
 });
