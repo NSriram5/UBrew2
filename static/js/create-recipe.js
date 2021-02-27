@@ -1,5 +1,4 @@
 async function addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients) {
-    debugger;
     try {
         const response = await axios.post('/recipes', { Name: typedName, ABV: typedABV, OG: typedOG, FG: typedFG, IBU: typedIBU, instructions: typedInstructions, public: selectedPublic, shareable: selectedShareable, active: selectedActive, styleId: selectedstyle, Ingredients: addedIngredients });
         if (response.data.invalidMessage) {
@@ -58,7 +57,6 @@ function clickaddRecipe(event) {
     let selectedActive = $("#activeInput").is(':checked')
     let selectedstyle = $("#styleInput").val();
     let addedIngredients = JSON.parse(sessionStorage.getItem("ingredients"));
-    debugger;
     addRecipe(typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients);
 
 

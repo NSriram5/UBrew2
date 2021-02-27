@@ -316,7 +316,6 @@ module.exports = {
     },
 
     async updateRecipe(recipe) {
-
         if (recipe.token == undefined) { return { error: 'You must submit a token' }; }
         var res = await Recipe.findOne({
             where: { token: recipe.token },
@@ -347,7 +346,6 @@ module.exports = {
                     console.log('Error creating Ingredient');
                 })
         };
-
         let newRecipe = {};
         newRecipe.Name = recipe.Name;
         newRecipe.ABV = recipe.ABV;

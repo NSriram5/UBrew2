@@ -76,7 +76,7 @@ function clicksaveRecipe(event) {
     let selectedPublic = $("#publicInput").is(':checked');
     let selectedShareable = $("#shareableInput").is(':checked')
     let selectedActive = $("#activeInput").is(':checked')
-    let selectedstyle = $("#styleInput").val();
+    let selectedstyle = parseInt($("#styleInput").val());
     let addedIngredients = JSON.parse(sessionStorage.getItem("ingredients"));
     updateRecipe(retrievedToken, typedName, typedABV, typedOG, typedFG, typedIBU, typedInstructions, selectedPublic, selectedShareable, selectedActive, selectedstyle, addedIngredients);
 

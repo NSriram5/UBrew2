@@ -26,7 +26,7 @@ async function conductRegister(e) {
     let typedPassword = e.target.querySelector("#passwordInput").value;
     let typedFirstName = e.target.querySelector("#firstnameInput").value;
     let typedLastName = e.target.querySelector("#lastnameInput").value;
-    debugger;
+
     getRegister(typedEmail, typedPassword, typedFirstName, typedLastName);
 
 
