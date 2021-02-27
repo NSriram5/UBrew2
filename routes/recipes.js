@@ -45,10 +45,12 @@ router.get("/:token", async function(req, res, next) {
         } else {
             canUpdate = true;
         }
-        const [style] = await getStyle({ id: recipe.styleId });
+
+        const styles = await getStyle({});
+        const style = styles.filter(style => style.id == recipe.styleId)[0];
         recipe["styleName"] = style.name;
         let user = res.locals.user ? res.locals.user : false;
-        return res.render("view-recipe.html", { recipe, user, canUpdate });
+        return res.render("view-recipe.html", { recipe, user, canUpdate, styles });
     } catch (err) {
         return next(err);
     }
@@ -85,8 +87,7 @@ router.post("/", ensureLoggedIn, async function(req, res, next) {
  */
 router.patch("/", ensureLoggedIn, async function(req, res, next) {
     try {
-        const response = await Recipe.getRecipe({ isAdmin: true, id: req.body.id });
-        const recipe = response.rows[0];
+        const recipe = await Recipe.getFullRecipe({ token: req.body.token, isAdmin: true });
         if (res.locals.user.userId != recipe.userId && !res.locals.user.admin) {
             throw new ForbiddenError("Only an admin or the user of this account can update these details");
         }
@@ -96,7 +97,7 @@ router.patch("/", ensureLoggedIn, async function(req, res, next) {
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError(errs);
         }
-
+        req.body["id"] = recipe.id
         await Recipe.updateRecipe(req.body);
 
         return res.json({ validMessage: "Recipe has been updated" })
