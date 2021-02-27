@@ -4,6 +4,7 @@ function clickUpdate(e) {
     $(".displayElements").hide();
     $(".controlBox>input").attr("disabled", false);
     $("#updateBtn").hide();
+    $("#saveBtn").hide();
     $("#saveBtn").show();
 
 }
@@ -51,6 +52,18 @@ function clickIngredient(e) {
     }
 }
 
+function clickCopytoClipboard(e) {
+    e.preventDefault();
+    let url = window.location.href;
+    let element = document.createElement('input');
+    document.body.appendChild(element);
+    element.value = url;
+    element.select();
+    document.execCommand('copy');
+    document.body.removeChild(element);
+    alert('Link copied');
+}
+
 function clicksaveRecipe(event) {
     event.preventDefault();
     let retrievedToken = $(".name-box").data().token;
@@ -85,4 +98,5 @@ $(function() {
     $("#addingredientBtn").click(addIngredient);
     $("#saved-ingredients").click(clickIngredient);
     $("#saveBtn").click(clicksaveRecipe);
+    $("#copyBtn").click(clickCopytoClipboard);
 });
