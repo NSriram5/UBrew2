@@ -48,7 +48,7 @@ module.exports = {
                 [Op.eq]: filter.userId
             };
         }
-        const attributesclause = ['userId', 'email', 'admin', 'firstName', 'lastName']
+        const attributesclause = ['userId', 'email', 'admin', 'firstName', 'lastName', 'disabled']
         if (authenticate) { attributesclause.push('passwordHash'); }
         return User
             .findAll({
@@ -78,7 +78,7 @@ module.exports = {
                     returning: ['firstName', 'lastName', 'email', 'admin',
                         'disabled', 'userId'
                     ],
-                    raw:true,
+                    raw: true,
                     where: whereclause
                 }
             )
@@ -112,17 +112,15 @@ module.exports = {
             return false;
         }
     },
-    disableUser(userId){
+    disableUser(userId) {
         let whereclause = {};
         whereclause.userId = userId;
         return User
-            .update(
-                {disabled:true}, {
-                    returning: true,
-                    where: whereclause,
-                    raw:true
-                }
-            )
+            .update({ disabled: true }, {
+                returning: true,
+                where: whereclause,
+                raw: true
+            })
             .then((result) => {
                 //console.log('User updated');
                 //const userResult = result.get({plain:true});
