@@ -41,7 +41,7 @@ router.get("/:userId", ensureLoggedIn, async function(req, res, next) {
         const user = User.get({ userId: req.params.userId });
         const recipes = Recipe.getRecipe({ userId: req.params.userId });
         await user && await recipes;
-
+        debugger;
         return res.render("user_details.html", { user, recipes });
     } catch (err) {
         return next(err);

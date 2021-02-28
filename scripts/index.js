@@ -57,7 +57,7 @@ app.get("/", authenticateJWT, async function(req, res, next) {
             publicRecipes = await publicRecipesPromise;
             myRecipes = [];
         }
-        return res.render("index.html", { publicRecipes: publicRecipes.rows, myRecipes: myRecipes.rows, user });
+        return res.render("index.html", { publicRecipes: publicRecipes.rows, myRecipes: myRecipes, user });
     } catch (err) {
         return next(err);
     }
@@ -107,7 +107,7 @@ app.get("/create-recipe", authenticateJWT, async function(req, res, next) {
             return res.redirect("/");
         }
         const styles = await getAllStyles({});
-        debugger;
+
         return res.render("create-recipe.html", { styles });
     } catch (err) {
         return next(err);
@@ -123,7 +123,7 @@ app.use("/styles", stylesRoutes);
 
 /** Handle 404 errors -- this matches everything */
 app.use(function(req, res, next) {
-    debugger;
+
     return next(new NotFoundError());
 });
 
