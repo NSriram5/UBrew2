@@ -44,20 +44,28 @@ nunjucks.configure(path.resolve(__dirname + "/../templates"), { autoescape: true
 app.get("/", authenticateJWT, async function(req, res, next) {
     try {
         const publicRecipesPromise = getRecipe({});
+        const stylesPromise = getAllStyles();
         let publicRecipes;
         let myRecipes;
-        let user = {}
+        let styles;
+        let user = {};
         if (res.locals.user) {
             console.log(`Logged in as ${res.locals.user}`)
             const myRecipesPromise = getMyRecipes(res.locals.user.userId);
             user = res.locals.user;
-            [publicRecipes, myRecipes] = await Promise.all([publicRecipesPromise, myRecipesPromise]);
+            [publicRecipes, myRecipes, styles] = await Promise.all([publicRecipesPromise, myRecipesPromise, stylesPromise]);
             if (!myRecipes) myRecipes = [];
         } else {
-            publicRecipes = await publicRecipesPromise;
+            [publicRecipes, styles] = await Promise.all([publicRecipesPromise, stylesPromise]);
             myRecipes = [];
         }
-        return res.render("index.html", { publicRecipes: publicRecipes.rows, myRecipes: myRecipes, user });
+        publicRecipes = publicRecipes.rows
+        const styleObj = {}
+        styles.map(style => styleObj[style.id] = { name: style.name, color: style.color });
+        publicRecipes.map((recipe) => { recipe["style"] = styleObj[recipe.styleId] });
+
+        myRecipes.map((recipe) => { recipe["style"] = styleObj[recipe.styleId] });
+        return res.render("index.html", { publicRecipes, myRecipes, user });
     } catch (err) {
         return next(err);
     }
