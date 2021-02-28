@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>UBrew2 - Create New Recipe</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" type="image/ico" href="img/UBrew2-Favicon.ico" />
+    <link href="css/all.min.css" rel="stylesheet" />
+    <link href="css/templatemo-style.css" rel="stylesheet" />
+
+</head>
+<!--
+
+Simple House
+
+https://templatemo.com/tm-539-simple-house
+
+-->
+
+<body>
+
+    <div class="container">
+        <!-- Top box -->
+        <!-- Logo & Site Name -->
+        <div class="placeholder-3">
+            <div class="parallax-window-2" data-parallax="scroll" data-image-src="img/login_header.jpg">
+                <div class="tm-header">
+                    <div class="row tm-header-inner">
+                        <div class="col-md-6 col-12">
+                            <div class="tm-site-text-box">
+                                <h1 class="tm-site-title"></h1>
+                                <h6 class="tm-site-description"></h6>
+                            </div>
+                        </div>
+                        <nav class="col-md-6 col-12 tm-nav">
+                            <ul class="tm-nav-ul">
+                                <li class="tm-nav-li"><a href="/" class="tm-nav-link active">Home</a></li>
+                                <li class="tm-nav-li"><a href="/about" class="tm-nav-link">About</a></li>
+                                <li class="tm-nav-li"><a href="/login" class="tm-nav-link">Login</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <main>
+			<header class="row tm-welcome-section">
+				<h2 class="col-12 text-center tm-section-title">Create New Recipe</h2>
+			</header>
+			<div class="tm-section tm-container-inner">
+				<div class="row">
+					<div class="col-md-6">
+						<figure class="tm-description-figure">
+							<img src="img/create-recipe.jpg" alt="Image" class="img-fluid" />
+						</figure>
+					</div>
+					<div class="col-md-6">
+						<div class="form-style-3">
+							<form>
+								<fieldset><legend>Recipe</legend>
+									<label for="field1"><span>Name:<span class="required">*</span></span>
+										<input type="text" class="input-field" name="field1" value="" />
+									</label>
+									<label for="field6"><span>Instructions <span class="required">*</span></span>
+										<textarea name="field6" class="textarea-field"></textarea>
+									</label>
+									<label for="field4"><span>ABV:</span>
+										<select name="field4" class="select-field">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										</select>
+									</label>									
+									<label for="field4"><span>OG:</span>
+										<select name="field4" class="select-field">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										</select>
+									</label>									
+									<label for="field4"><span>IBU:</span>
+										<select name="field4" class="select-field">
+											<option value="1">1</option>
+											<option value="2">2</option>
+											<option value="3">3</option>
+										</select>
+									</label>									
+
+									<label><span> </span>
+										<input type="submit" value="Submit" />
+									</label>
+								</fieldset>
+							</form>
+						</div>						
+					</div>
+				</div>
+			</div>
+        </main>
+        <footer class="tm-footer text-center">
+            <p>Copyright &copy; 2021 UBrew2 LLC</p>
+        </footer>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/parallax.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/create-recipe.js"></script>
+    <script>
+        $(document).ready(function() {
+            var acc = document.getElementsByClassName("accordion");
+            var i;
+
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
