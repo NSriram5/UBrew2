@@ -189,7 +189,7 @@ html {
 
 .img-fluid {
   max-width: 100%;
-  height: auto;
+  vertical-align: top;
 }
 
 body {
@@ -220,7 +220,11 @@ p, address {
   min-height: 220px;
   background-color: #CFBEA5;
 }
-
+.placeholder-3 {
+  width: 100%;
+  min-height: 150px;
+  background-color: #CFBEA5;
+}
 .parallax-window {
   min-height: 460px;
   background: transparent;
@@ -229,6 +233,15 @@ p, address {
 
 .parallax-window-2 {
   min-height: 220px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  background: transparent;
+  position: relative;
+}
+
+.parallax-window-3 {
+  min-height: 150px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -495,7 +508,6 @@ p, address {
 .tm-person {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   margin-bottom: 60px;
 }
@@ -509,6 +521,7 @@ p, address {
 .tm-person-description {
   padding-left: 20px;
   padding-right: 20px;
+  text-align: left;
 }
 
 .tm-person-name {
@@ -630,7 +643,13 @@ p, address {
 /* Contact Page */
 .tm-contact-form {
   max-width: 100%;
+  align-content: center;
 }
+
+.tm-recipeform {
+  max-width: 100%;
+}
+
 
 @media (min-width: 768px) {
  .tm-contact-form {
@@ -650,6 +669,67 @@ p, address {
 .form-group {
   margin-bottom: 30px;
 }
+.UB2_Label {
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.0;
+  width: auto;
+  color: #626364;
+  background-color: #fff;
+  background-clip: padding-box;
+  padding-top: 0.375rem 0.75rem;
+}
+
+
+.UB2_TextBox {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  width: auto;
+  color: #626364;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-right: 0;
+  border-top: 0;
+  border-left: 0;
+  border-radius: 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.UB2_TextArea {
+  font-size: 1.1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #626364;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-right: 0;
+  border-top: 0;
+  border-left: 0;
+  border-radius: 0;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.UB2_Select {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid #ced4da;
+  border-right: 0;
+  border-top: 0;
+  border-left: 0;
+  border-radius: 0;
+  padding: 0 4em 0 0;
+  margin: 0;
+  width: 80px;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  z-index: 1;
+}
+
 
 .form-control {
   display: block;  
@@ -854,4 +934,83 @@ address {
 
 .panel p {
   padding: 5px 20px 30px;
+}
+
+
+.form-style-3{
+	max-width: 450px;
+    font-family: 'Cinzel', serif;
+}
+.form-style-3 label{
+	display:block;
+	margin-bottom: 10px;
+}
+.form-style-3 label > span{
+	float: left;
+	width: 100px;
+	color: #000;
+	font-weight: bold;
+	font-size: 13px;
+}
+.form-style-3 fieldset{
+	border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	margin: 0px 0px 10px 0px;
+	border: 1px solid #222222;
+	padding: 20px;
+	background: #EDC89A;
+}
+.form-style-3 fieldset legend{
+	color: #222222;
+	border-top: 1px solid #222222;
+	border-left: 1px solid #222222;
+	border-right: 1px solid #222222;
+	border-radius: 5px 5px 0px 0px;
+	-webkit-border-radius: 5px 5px 0px 0px;
+	-moz-border-radius: 5px 5px 0px 0px;
+	background: #EDC89A;
+	padding: 0px 8px 3px 8px;
+	font-weight: normal;
+	font-size: 12px;
+}
+.form-style-3 textarea{
+	width:250px;
+	height:100px;
+}
+.form-style-3 input[type=text],
+.form-style-3 input[type=date],
+.form-style-3 input[type=datetime],
+.form-style-3 input[type=number],
+.form-style-3 input[type=search],
+.form-style-3 input[type=time],
+.form-style-3 input[type=url],
+.form-style-3 input[type=email],
+.form-style-3 select, 
+.form-style-3 textarea{
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border: 1px solid #CCC;
+	outline: none;
+	color: #000;
+	padding: 5px 8px 5px 8px;
+	background: #FFF;
+	width:50%;
+}
+.form-style-3  input[type=submit],
+.form-style-3  input[type=button]{
+	background: #333333;
+	border: 1px solid #CCC;
+	padding: 5px 15px 5px 15px;
+	color: #FFF;
+	border-radius: 3px;
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;	
+	font-weight: bold;
+}
+.required{
+	color:red;
+	font-weight:normal;
 }
