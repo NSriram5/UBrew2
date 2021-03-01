@@ -75,14 +75,18 @@ module.exports = {
         //console.log('full recipe result');
         console.log(fullRecipeResult);
         fullRecipeResult.IBU=345;
+        fullRecipeResult.styleId=5;
+        delete fullRecipeResult.id;
         var deleteRecipe = fullRecipeResult;
-        await recipe.updateRecipe(fullRecipeResult);
-        console.log(recipeResult.rows[0].instructions);
-        await recipe.deleteRecipe(deleteRecipe.token);
         const updatePass = await user.updateUser({userId:tempUser.userId, password:'plaintText!'});
-        console.log(updatePass);
+        
         const userdisable = await user.disableUser(tempUser.userId);
-        console.log(userdisable);
+        //console.log(userdisable);
+        let updateResult = await recipe.updateRecipe(fullRecipeResult);
+       /* console.log(updateResult);
+        console.log(updateResult[1][0]);*/
+        await recipe.deleteRecipe(deleteRecipe.token);
+ 
         //const  emptyFilter = await recipe.getFullRecipe({});
         //console.log(emptyFilter);
     }

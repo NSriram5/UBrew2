@@ -13,6 +13,6 @@ if (configuration.environmentOptions.environment == "AWS") {
 
 }
 
-app.listen(3000, function() {
+app.listen(80, function() {
     console.log("Listening on 3000");
 })

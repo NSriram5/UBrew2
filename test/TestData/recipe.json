@@ -25,14 +25,14 @@
 
     },
     {
-        "Name": "Test Recipe Public",
+        "Name": "Leprechaun Lager",
         "ABV": 5.6,
         "OG": 1.062,
         "FG": 1.010,
-        "IBU": 77,
+        "IBU": 22,
         "public": true,
         "shareable": true,
-        "styleId": 2,
+        "styleId": 6,
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
@@ -51,14 +51,14 @@
 
     },
     {
-        "Name": "Test Recipe Owned",
+        "Name": "Shorty Stout",
         "ABV": 5.6,
         "OG": 1.062,
         "FG": 1.010,
-        "IBU": 77,
+        "IBU": 48,
         "public": true,
         "shareable": true,
-        "styleId": 3,
+        "styleId": 2,
         "active": true,
         "instructions": "Blank list of instructions",
         "Ingredients": [{
