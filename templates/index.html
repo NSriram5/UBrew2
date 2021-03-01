@@ -97,7 +97,7 @@
                 <div id="tm-gallery-page-mine" class="tm-gallery-page hidden">
                     {% for recipe in myRecipes %}
                     <article class="col-lg-3 col-md-4 col-sm-6 col-12 tm-gallery-item">
-                        <a href="/recipes/{{recipe.id}}">
+                        <a href="/recipes/{{recipe.token}}">
                             <figure style="background-color:#{{recipe.style.color}};">
                                 <img src="../img/gallery/{{recipe.style.color}}.jpg" alt="{{recipe.name}}" class="img-fluid tm-gallery-img" />
                                 <figcaption style="background-color:rgba(255, 255, 255, 0.79);">

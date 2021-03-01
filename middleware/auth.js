@@ -3,6 +3,7 @@
 /** Convenience middleware to handle common auth cases in routes. */
 
 const jwt = require("jsonwebtoken");
+const { restart } = require("nodemon");
 const { SECRET_KEY } = require("../config/config");
 const { UnauthorizedError } = require("../expressError");
 
@@ -42,7 +43,8 @@ function ensureLoggedIn(req, res, next) {
         if (!res.locals.user) throw new UnauthorizedError();
         return next();
     } catch (err) {
-        return next(err);
+        res.redirect('login');
+        //return next(err);
     }
 }
 
