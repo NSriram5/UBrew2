@@ -139,7 +139,7 @@ module.exports = {
                 ],
                 raw: true,
                 attributes: ['id', 'Name', 'ABV', 'OG', 'FG', 'IBU', 'token',
-                    'styleId', 'public', 'shareable', 'instructions', 'userId'
+                    'styleId', 'public', 'shareable', 'instructions', 'userId', 'active'
                 ],
             })
             .then((result) => {
